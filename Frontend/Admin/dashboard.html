@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard — Laundry Flow Pro Admin</title>
+  <link rel="stylesheet" href="css/admin.css" />
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-logo">
+    <div class="logo-icon">🧺</div>
+    <div>
+      <div class="logo-text">Laundry <span>Flow</span> Pro</div>
+      <span class="badge">Admin Panel</span>
+    </div>
+  </div>
+
+  <nav class="sidebar-nav">
+    <div class="nav-section-label">Main</div>
+    <a href="dashboard.html" class="nav-item active">
+      <span class="nav-icon">📊</span> Dashboard
+    </a>
+    <a href="orders.html" class="nav-item">
+      <span class="nav-icon">📦</span> Orders
+      <span class="nav-badge" id="nav-pending-badge"></span>
+    </a>
+    <a href="users.html" class="nav-item">
+      <span class="nav-icon">👥</span> Customers
+    </a>
+
+    <div class="nav-section-label">Manage</div>
+    <a href="services.html" class="nav-item">
+      <span class="nav-icon">🧼</span> Services
+    </a>
+    <a href="promos.html" class="nav-item">
+      <span class="nav-icon">🎟️</span> Promo Codes
+    </a>
+    <a href="reviews.html" class="nav-item">
+      <span class="nav-icon">⭐</span> Reviews
+    </a>
+
+    <div class="nav-section-label">Reports</div>
+    <a href="analytics.html" class="nav-item">
+      <span class="nav-icon">📈</span> Analytics
+    </a>
+    <a href="notifications.html" class="nav-item">
+      <span class="nav-icon">🔔</span> Notifications
+      <span class="nav-badge green" id="nav-notif-badge"></span>
+    </a>
+  </nav>
+
+  <div class="sidebar-footer">
+    <div class="admin-profile">
+      <div class="admin-avatar">SA</div>
+      <div class="admin-info">
+        <div class="name">Super Admin</div>
+        <div class="role">Administrator</div>
+      </div>
+      <span style="color:var(--gray-500);font-size:14px;">⋯</span>
+    </div>
+  </div>
+</aside>
+
+<!-- MAIN -->
+<div class="main-content">
+  <!-- TOPBAR -->
+  <header class="topbar">
+    <button class="sidebar-toggle" id="sidebarToggle">☰</button>
+    <div class="topbar-left">
+      <div class="page-title">Dashboard</div>
+      <div class="page-subtitle">Welcome back, Admin — here's what's happening today</div>
+    </div>
+    <div class="topbar-actions">
+      <button class="topbar-btn" title="Refresh" onclick="loadDashboard()">🔄</button>
+    </div>
+  </header>
+
+  <div class="page-body">
+
+    <!-- STAT CARDS (6 cards, 3-column grid) -->
+    <div class="stats-grid stats-grid-6">
+      <div class="stat-card blue">
+        <div class="stat-top"><div class="stat-icon">👥</div></div>
+        <div class="stat-value" id="stat-customers">0</div>
+        <div class="stat-label">Total Customers</div>
+      </div>
+      <div class="stat-card green">
+        <div class="stat-top"><div class="stat-icon">⚙️</div></div>
+        <div class="stat-value" id="stat-active">0</div>
+        <div class="stat-label">Active Orders</div>
+      </div>
+      <div class="stat-card orange">
+        <div class="stat-top"><div class="stat-icon">📥</div></div>
+        <div class="stat-value" id="stat-collections">0</div>
+        <div class="stat-label">Today Collections</div>
+      </div>
+      <div class="stat-card purple">
+        <div class="stat-top"><div class="stat-icon">🚚</div></div>
+        <div class="stat-value" id="stat-deliveries">0</div>
+        <div class="stat-label">Today Deliveries</div>
+      </div>
+      <div class="stat-card teal">
+        <div class="stat-top"><div class="stat-icon">💰</div></div>
+        <div class="stat-value" id="stat-monthly-rev">LKR 0</div>
+        <div class="stat-label">Monthly Revenue</div>
+      </div>
+      <div class="stat-card green">
+        <div class="stat-top"><div class="stat-icon">💎</div></div>
+        <div class="stat-value" id="stat-total-rev">LKR 0</div>
+        <div class="stat-label">Total Revenue</div>
+      </div>
+    </div>
+
+    <!-- CHARTS ROW -->
+    <div class="grid-6040 mb-20">
+      <!-- Revenue Line Chart -->
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <div class="card-title">Revenue Overview</div>
+            <div class="card-subtitle" id="revenueSubtitle">This Week</div>
+          </div>
+          <select class="form-control" style="width:auto;font-size:12px;padding:6px 10px;" id="revenuePeriod">
+            <option value="week">This Week</option>
+            <option value="month">This Month</option>
+            <option value="year">This Year</option>
+            <option value="all">All Time</option>
+          </select>
+        </div>
+        <div class="card-body">
+          <div id="revenueChartWrap" style="width:100%;overflow:hidden;"></div>
+        </div>
+      </div>
+
+      <!-- Order Status Donut -->
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <div class="card-title">Order Status</div>
+            <div class="card-subtitle" id="statusSubtitle">This Week</div>
+          </div>
+          <select class="form-control" style="width:auto;font-size:12px;padding:6px 10px;" id="statusPeriod">
+            <option value="week">This Week</option>
+            <option value="month">This Month</option>
+            <option value="year">This Year</option>
+            <option value="all">All Time</option>
+          </select>
+        </div>
+        <div class="card-body">
+          <div class="donut-wrap">
+            <svg class="donut-svg" id="donutSvg" width="110" height="110" viewBox="0 0 110 110">
+              <circle cx="55" cy="55" r="40" fill="none" stroke="var(--gray-100)" stroke-width="18"/>
+              <!-- segments injected by JS -->
+              <text x="55" y="50" text-anchor="middle" font-size="18" font-weight="800" fill="var(--gray-900)" id="donut-total">0</text>
+              <text x="55" y="64" text-anchor="middle" font-size="10" fill="var(--gray-500)">orders</text>
+            </svg>
+            <div class="donut-legend" id="donut-legend"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RECENT ORDERS + TOP SERVICES -->
+    <div class="grid-6040">
+      <!-- Recent Orders -->
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <div class="card-title">Recent Orders</div>
+            <div class="card-subtitle">Latest activity</div>
+          </div>
+          <a href="orders.html" class="btn btn-outline btn-sm">View All</a>
+        </div>
+        <div class="card-body" style="padding-top:12px;">
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Order</th>
+                  <th>Customer</th>
+                  <th>Service</th>
+                  <th>Status</th>
+                  <th>Total</th>
+                </tr>
+              </thead>
+              <tbody id="recent-orders-body">
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- Top Services + Quick Actions -->
+      <div style="display:flex;flex-direction:column;gap:20px;">
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <div class="card-title">Top Services</div>
+              <div class="card-subtitle" id="topServicesSubtitle">By order count</div>
+            </div>
+            <select class="form-control" style="width:auto;font-size:12px;padding:6px 10px;" id="topServicesPeriod">
+              <option value="week">This Week</option>
+              <option value="month">This Month</option>
+              <option value="year">This Year</option>
+              <option value="all">All Time</option>
+            </select>
+          </div>
+          <div class="card-body">
+            <div id="top-services"></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">Quick Actions</div>
+          </div>
+          <div class="card-body" style="display:flex;flex-direction:column;gap:10px;">
+            <a href="orders.html?filter=schedule" class="btn btn-primary w-full" style="justify-content:center;">
+              📦 Review Scheduled Orders
+            </a>
+            <a href="users.html" class="btn btn-outline w-full" style="justify-content:center;">
+              👥 Manage Customers
+            </a>
+            <a href="promos.html" class="btn btn-outline w-full" style="justify-content:center;">
+              🎟️ Create Promo Code
+            </a>
+            <a href="analytics.html" class="btn btn-outline w-full" style="justify-content:center;">
+              📈 View Analytics
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- BOTTOM ROW -->
+    <div class="grid-2 mt-20">
+      <!-- Recent Signups -->
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <div class="card-title">New Customers</div>
+            <div class="card-subtitle">Registered this week</div>
+          </div>
+          <a href="users.html" class="btn btn-outline btn-sm">View All</a>
+        </div>
+        <div class="card-body" style="padding-top:8px;">
+          <div id="new-customers"></div>
+        </div>
+      </div>
+
+      <!-- Recent Reviews -->
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <div class="card-title">Recent Reviews</div>
+            <div class="card-subtitle">Customer feedback</div>
+          </div>
+          <a href="reviews.html" class="btn btn-outline btn-sm">View All</a>
+        </div>
+        <div class="card-body" style="padding-top:8px;">
+          <div id="recent-reviews"></div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /page-body -->
+</div><!-- /main-content -->
+
+<div id="toast-container"></div>
+
+<script src="js/admin.js"></script>
+<script src="js/dashboard.js"></script>
+</body>
+</html>

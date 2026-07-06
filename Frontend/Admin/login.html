@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Login — Laundry Flow Pro</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link rel="stylesheet" href="css/admin-login.css" />
+</head>
+<body>
+
+  <!-- Background -->
+  <div class="glow-orb orb-1"></div>
+  <div class="glow-orb orb-2"></div>
+
+  <!-- Header -->
+  <header class="login-header">
+    <div class="brand">
+      <div class="brand-icon">🧺</div>
+      <span>Laundry<span class="brand-accent">Flow</span> Pro</span>
+    </div>
+    <a href="../Customer/login.html" class="header-back">
+      <i class="fas fa-arrow-left"></i> Customer Login
+    </a>
+  </header>
+
+  <!-- Login Card -->
+  <main>
+    <div class="login-card" id="login-card">
+      <div class="card-top-bar"></div>
+
+      <div class="login-icon">
+        <i class="fas fa-shield-halved"></i>
+      </div>
+
+      <div class="login-head">
+        <h1>Admin Portal</h1>
+        <p>Sign in with your administrator credentials</p>
+      </div>
+
+      <!-- Error banner -->
+      <div class="error-banner hidden" id="error-banner">
+        <i class="fas fa-circle-exclamation"></i>
+        <span id="error-text">Invalid credentials.</span>
+      </div>
+
+      <form id="login-form" novalidate>
+
+        <!-- Email -->
+        <div class="field" id="fg-email">
+          <label for="email">Email Address</label>
+          <div class="input-wrap" id="iw-email">
+            <i class="fas fa-envelope fi"></i>
+            <input type="email" id="email" name="email"
+                   placeholder="admin@laundryflowpro.com"
+                   autocomplete="username" />
+          </div>
+          <span class="field-msg" id="msg-email"></span>
+        </div>
+
+        <!-- Password -->
+        <div class="field" id="fg-password">
+          <div class="label-row">
+            <label for="password">Password</label>
+          </div>
+          <div class="input-wrap" id="iw-password">
+            <i class="fas fa-lock fi"></i>
+            <input type="password" id="password" name="password"
+                   placeholder="Your password"
+                   autocomplete="current-password" />
+            <button type="button" class="pw-toggle" id="pw-toggle" aria-label="Toggle password">
+              <i class="fas fa-eye"></i>
+            </button>
+          </div>
+          <span class="field-msg" id="msg-password"></span>
+        </div>
+
+        <!-- Remember -->
+        <label class="checkbox-wrap">
+          <input type="checkbox" id="remember" />
+          <span class="check-box"></span>
+          <span>Keep me signed in</span>
+        </label>
+
+        <!-- Submit -->
+        <button type="submit" class="btn-submit" id="login-btn">
+          <span id="btn-text"><i class="fas fa-right-to-bracket"></i> Sign In</span>
+          <div class="spinner" id="spinner"></div>
+        </button>
+
+      </form>
+
+      <p class="card-footer">
+        Not an admin? <a href="../Customer/login.html">Customer login →</a>
+      </p>
+    </div>
+  </main>
+
+  <div id="toast-wrap"></div>
+
+  <script src="js/admin-login.js"></script>
+</body>
+</html>

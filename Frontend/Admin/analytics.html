@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Analytics — Laundry Flow Pro Admin</title>
+  <link rel="stylesheet" href="css/admin.css" />
+</head>
+<body>
+
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-logo">
+    <div class="logo-icon">🧺</div>
+    <div><div class="logo-text">Laundry <span>Flow</span> Pro</div><span class="badge">Admin Panel</span></div>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="nav-section-label">Main</div>
+    <a href="dashboard.html" class="nav-item"><span class="nav-icon">📊</span> Dashboard</a>
+    <a href="orders.html" class="nav-item"><span class="nav-icon">📦</span> Orders<span class="nav-badge" id="nav-pending-badge"></span></a>
+    <a href="users.html" class="nav-item"><span class="nav-icon">👥</span> Customers</a>
+    <div class="nav-section-label">Manage</div>
+    <a href="services.html" class="nav-item"><span class="nav-icon">🧼</span> Services</a>
+    <a href="promos.html" class="nav-item"><span class="nav-icon">🎟️</span> Promo Codes</a>
+    <a href="reviews.html" class="nav-item"><span class="nav-icon">⭐</span> Reviews</a>
+    <div class="nav-section-label">Reports</div>
+    <a href="analytics.html" class="nav-item active"><span class="nav-icon">📈</span> Analytics</a>
+    <a href="notifications.html" class="nav-item"><span class="nav-icon">🔔</span> Notifications<span class="nav-badge green" id="nav-notif-badge"></span></a>
+  </nav>
+  <div class="sidebar-footer">
+    <div class="admin-profile">
+      <div class="admin-avatar">SA</div>
+      <div class="admin-info"><div class="name">Super Admin</div><div class="role">Administrator</div></div>
+    </div>
+  </div>
+</aside>
+
+<div class="main-content">
+  <header class="topbar">
+    <button class="sidebar-toggle" id="sidebarToggle">☰</button>
+    <div class="topbar-left">
+      <div class="page-title">Analytics</div>
+      <div class="page-subtitle" id="analyticsSubtitle">Business insights and performance metrics</div>
+    </div>
+    <div class="topbar-actions">
+      <select class="form-control" id="analyticsRange" style="width:150px;font-size:12px;padding:7px 12px;">
+        <option value="30days">Last 30 Days</option>
+        <option value="3months">Last 3 Months</option>
+        <option value="6months">Last 6 Months</option>
+        <option value="12months" selected>Last 12 Months</option>
+      </select>
+      <button class="btn btn-outline btn-sm" id="exportExcelBtn" title="Export Excel report">📊 Excel</button>
+      <button class="btn btn-outline btn-sm" id="exportPdfBtn" title="Export PDF report">📄 PDF</button>
+    </div>
+  </header>
+
+  <div class="page-body">
+
+    <!-- KPI STRIP -->
+    <div class="stats-grid mb-20">
+
+      <div class="stat-card blue">
+        <div class="stat-top">
+          <div class="stat-icon">💰</div>
+          <span class="stat-change" id="kpi-revenue-change">—</span>
+        </div>
+        <div class="stat-value" id="kpi-revenue">LKR 0</div>
+        <div class="stat-label">Total Revenue</div>
+      </div>
+
+      <div class="stat-card green">
+        <div class="stat-top">
+          <div class="stat-icon">📦</div>
+          <span class="stat-change" id="kpi-orders-change">—</span>
+        </div>
+        <div class="stat-value" id="kpi-orders">0</div>
+        <div class="stat-label">Total Orders</div>
+      </div>
+
+      <div class="stat-card orange">
+        <div class="stat-top">
+          <div class="stat-icon">👤</div>
+          <span class="stat-change" id="kpi-active-change">—</span>
+        </div>
+        <div class="stat-value" id="kpi-active">0</div>
+        <div class="stat-label">Active Customers</div>
+      </div>
+
+      <div class="stat-card purple">
+        <div class="stat-top">
+          <div class="stat-icon">🌱</div>
+          <span class="stat-change" id="kpi-new-change">—</span>
+        </div>
+        <div class="stat-value" id="kpi-new">0</div>
+        <div class="stat-label">New Customers</div>
+      </div>
+
+    </div>
+
+    <!-- REVENUE + SERVICE CHARTS ROW -->
+    <div class="grid-6040 mb-20">
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <div class="card-title">Revenue Trend</div>
+            <div class="card-subtitle" id="revenueChartSubtitle">Past 12 months</div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div style="display:flex;align-items:flex-end;gap:4px;height:160px;margin-bottom:8px;" id="monthlyChart"></div>
+          <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--gray-400);overflow:hidden;" id="monthlyLabels"></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <div class="card-title">Revenue by Service</div>
+            <div class="card-subtitle">Current period</div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div id="service-revenue-chart"><p style="color:var(--gray-400);font-size:13px;">Loading…</p></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ORDER TREND + CUSTOMER METRICS -->
+    <div class="grid-2 mb-20">
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <div class="card-title">Customer Growth</div>
+            <div class="card-subtitle" id="growthChartSubtitle">New registrations</div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div style="display:flex;align-items:flex-end;gap:4px;height:120px;margin-bottom:8px;" id="growthChart"></div>
+          <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--gray-400);overflow:hidden;" id="growthLabels"></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <div class="card-title">Key Metrics</div>
+            <div class="card-subtitle">Performance indicators</div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div id="key-metrics"><p style="color:var(--gray-400);font-size:13px;">Loading…</p></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- GROWTH STATS ROW -->
+    <div class="stats-grid mb-20" style="grid-template-columns:repeat(3,1fr);">
+      <div class="stat-card" style="background:var(--gray-50);border:1px solid var(--gray-100);">
+        <div class="stat-top"><div class="stat-icon" style="font-size:18px;">📈</div><span class="stat-change" id="kpi-avg-change">—</span></div>
+        <div class="stat-value" style="font-size:20px;" id="kpi-avg">LKR 0</div>
+        <div class="stat-label">Avg Order Value</div>
+      </div>
+      <div class="stat-card" style="background:var(--gray-50);border:1px solid var(--gray-100);">
+        <div class="stat-top"><div class="stat-icon" style="font-size:18px;">🔁</div><span class="stat-change" id="kpi-repeat-change">—</span></div>
+        <div class="stat-value" style="font-size:20px;" id="kpi-repeat">0%</div>
+        <div class="stat-label">Repeat Customer Rate</div>
+      </div>
+      <div class="stat-card" style="background:var(--gray-50);border:1px solid var(--gray-100);">
+        <div class="stat-top"><div class="stat-icon" style="font-size:18px;">⭐</div></div>
+        <div class="stat-value" style="font-size:20px;" id="kpi-rating">—</div>
+        <div class="stat-label">Avg Customer Rating</div>
+      </div>
+    </div>
+
+    <!-- TOP CUSTOMERS TABLE -->
+    <div class="card">
+      <div class="card-header">
+        <div><div class="card-title">Top Customers</div><div class="card-subtitle">By total spend in selected period</div></div>
+      </div>
+      <div class="card-body" style="padding-top:12px;">
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>#</th><th>Customer</th><th>Orders</th><th>Total Spent</th><th>Avg Order</th><th>Last Order</th></tr>
+            </thead>
+            <tbody id="top-customers-body">
+              <tr><td colspan="6" style="text-align:center;color:var(--gray-400);padding:24px;">Loading…</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /page-body -->
+</div><!-- /main-content -->
+
+<div id="toast-container"></div>
+<script src="js/admin.js"></script>
+<script src="js/analytics.js"></script>
+</body>
+</html>

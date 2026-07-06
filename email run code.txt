@@ -1,0 +1,1 @@
+"C:\xampp\php\php.exe" "C:\xampp\htdocs\Laundry Flow Pro\Backend\worker\email_worker.php" --loop

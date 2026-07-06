@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Schedule Pickup — Laundry Flow Pro</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/booking.css" />
+</head>
+<body>
+
+  <!-- ═══════════════════════════ NAVBAR ═══════════════════════════ -->
+  <nav class="navbar scrolled" id="navbar">
+    <div class="container nav-inner">
+      <a href="index.html" class="nav-brand">
+        <div class="brand-icon"><i class="fas fa-tshirt"></i></div>
+        <span>Laundry<span class="brand-accent">Flow</span> Pro</span>
+      </a>
+      <div class="nav-actions" style="margin-left:auto;">
+        <div id="nav-auth" style="display:none;align-items:center;gap:0.75rem;">
+          <a href="profile.html" class="btn btn-ghost" style="display:flex;align-items:center;gap:0.4rem;">
+            <i class="fas fa-user-circle" style="font-size:1.15rem;"></i>
+            <span id="nav-user-greeting">Profile</span>
+          </a>
+          <button class="btn btn-primary" id="nav-logout-btn">
+            <i class="fas fa-sign-out-alt"></i> Logout
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ═══════════════════════ PROGRESS BAR ═════════════════════════ -->
+  <div class="progress-bar">
+    <div class="progress-steps">
+      <div class="step done">
+        <div class="step-num">1</div>
+        <span class="step-label">Service</span>
+      </div>
+      <div class="step active">
+        <div class="step-num">2</div>
+        <span class="step-label">Schedule</span>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <span class="step-label">Checkout</span>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <span class="step-label">Done</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════ CONTENT ══════════════════════════ -->
+  <main class="booking-page" style="padding-top:0">
+    <div class="booking-container">
+
+      <h1 class="booking-title">Schedule Your Pickup</h1>
+      <p class="booking-sub">Fill in your pickup and delivery details below.</p>
+
+      <form id="pickup-form" novalidate>
+
+        <!-- ── Selected Service (locked) ───────────────────────── -->
+        <div class="bk-card">
+          <div class="bk-card-title"><i class="fas fa-lock"></i> Selected Service</div>
+          <div class="locked-service" id="locked-service">
+            <div class="ls-icon" id="svc-icon">🧺</div>
+            <div class="ls-info">
+              <div class="ls-name" id="svc-name">Loading…</div>
+              <div class="ls-meta" id="svc-meta"></div>
+            </div>
+            <a href="services.html" class="ls-change">Change</a>
+          </div>
+        </div>
+
+        <!-- ── Measurement ─────────────────────────────────────── -->
+        <div class="bk-card" id="measurement-card">
+          <div class="bk-card-title"><i class="fas fa-weight-hanging"></i> Order Measurement</div>
+
+          <div class="form-row" id="field-weight" style="display:none">
+            <div class="form-group">
+              <label for="weight_lbs">Weight (lbs)<span class="req">*</span></label>
+              <input type="number" id="weight_lbs" name="weight_lbs"
+                     class="form-control" min="0.1" step="0.1" placeholder="e.g. 5.5" />
+            </div>
+          </div>
+
+          <div class="form-row" id="field-items" style="display:none">
+            <div class="form-group">
+              <label for="item_count">Number of Items<span class="req">*</span></label>
+              <input type="number" id="item_count" name="item_count"
+                     class="form-control" min="1" step="1" placeholder="e.g. 3" />
+            </div>
+          </div>
+
+          <div class="form-row" id="field-bags" style="display:none">
+            <div class="form-group">
+              <label for="bag_count">Number of Bags<span class="req">*</span></label>
+              <input type="number" id="bag_count" name="bag_count"
+                     class="form-control" min="1" step="1" placeholder="e.g. 2" />
+            </div>
+          </div>
+
+          <!-- Live estimate -->
+          <div class="price-summary" id="estimate-box" style="display:none;margin-top:16px;">
+            <div class="price-row">
+              <span>Estimated Subtotal</span>
+              <span id="est-subtotal">$0.00</span>
+            </div>
+            <div class="price-row">
+              <span>Tax (8%)</span>
+              <span id="est-tax">$0.00</span>
+            </div>
+            <div class="price-row total">
+              <span>Estimated Total</span>
+              <span id="est-total">$0.00</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── Pickup Information ──────────────────────────────── -->
+        <div class="bk-card">
+          <div class="bk-card-title"><i class="fas fa-calendar-check"></i> Pickup Information</div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="pickup_date">Pickup Date<span class="req">*</span></label>
+              <input type="date" id="pickup_date" name="pickup_date" class="form-control" />
+            </div>
+            <div class="form-group">
+              <label for="pickup_time">Pickup Time<span class="req">*</span></label>
+              <input type="time" id="pickup_time" name="pickup_time" class="form-control" />
+            </div>
+          </div>
+
+          <div class="form-row single" id="pickup-saved-row" style="display:none;">
+            <div class="form-group">
+              <label for="pickup_address_select">Choose a Saved Address</label>
+              <select id="pickup_address_select" class="form-control">
+                <option value="new">➕ Enter a new address</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-row single">
+            <div class="form-group">
+              <label for="pickup_address">Full Pickup Address<span class="req">*</span></label>
+              <input type="text" id="pickup_address" name="pickup_address"
+                     class="form-control" placeholder="e.g. 123 Main St, Sainthamarthu" />
+            </div>
+          </div>
+
+          <div class="form-row single">
+            <div class="form-group">
+              <label for="notes">Notes for Driver</label>
+              <input type="text" id="notes" name="notes"
+                     class="form-control" placeholder="e.g. Ring doorbell, leave at door…" />
+            </div>
+          </div>
+        </div>
+
+        <!-- ── Delivery Information ────────────────────────────── -->
+        <div class="bk-card">
+          <div class="bk-card-title"><i class="fas fa-truck"></i> Delivery Information</div>
+
+          <div class="check-row">
+            <input type="checkbox" id="same-address" name="same_address" />
+            <label for="same-address">Same as Pickup Address</label>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="delivery_date">Delivery Date</label>
+              <input type="date" id="delivery_date" name="delivery_date" class="form-control" />
+            </div>
+            <div class="form-group">
+              <label for="delivery_time">Delivery Time</label>
+              <input type="time" id="delivery_time" name="delivery_time" class="form-control" />
+            </div>
+          </div>
+
+          <div class="form-row single" id="delivery-saved-row" style="display:none;">
+            <div class="form-group">
+              <label for="delivery_address_select">Choose a Saved Address</label>
+              <select id="delivery_address_select" class="form-control">
+                <option value="new">➕ Enter a new address</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-row single" id="delivery-addr-row">
+            <div class="form-group">
+              <label for="delivery_address">Full Delivery Address<span class="req">*</span></label>
+              <input type="text" id="delivery_address" name="delivery_address"
+                     class="form-control" placeholder="e.g. 123 Main St, Sainthamarthu" />
+            </div>
+          </div>
+        </div>
+
+        <!-- ── Special Instructions ────────────────────────────── -->
+        <div class="bk-card">
+          <div class="bk-card-title"><i class="fas fa-sticky-note"></i> Special Instructions</div>
+          <div class="form-row single">
+            <div class="form-group">
+              <label for="special_instructions">Instructions</label>
+              <textarea id="special_instructions" name="special_instructions"
+                        class="form-control" rows="3"
+                        placeholder="Any special care instructions for your laundry…"></textarea>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── Actions ─────────────────────────────────────────── -->
+        <div class="bk-actions">
+          <button type="button" class="btn-back" onclick="window.location.href='services.html'">
+            <i class="fas fa-arrow-left"></i> Back to Services
+          </button>
+          <button type="submit" class="btn-continue" id="btn-continue">
+            Continue to Checkout <i class="fas fa-arrow-right"></i>
+          </button>
+        </div>
+
+      </form>
+    </div>
+  </main>
+
+  <div id="toast-wrap"></div>
+
+  <script src="js/config.js"></script>
+  <script src="js/notif-bell.js"></script>
+  <script src="js/schedule-pickup.js"></script>
+</body>
+</html>

@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Orders — Laundry Flow Pro Admin</title>
+  <link rel="stylesheet" href="css/admin.css" />
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-logo">
+    <div class="logo-icon">🧺</div>
+    <div>
+      <div class="logo-text">Laundry <span>Flow</span> Pro</div>
+      <span class="badge">Admin Panel</span>
+    </div>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="nav-section-label">Main</div>
+    <a href="dashboard.html" class="nav-item"><span class="nav-icon">📊</span> Dashboard</a>
+    <a href="orders.html" class="nav-item active"><span class="nav-icon">📦</span> Orders<span class="nav-badge" id="nav-pending-badge"></span></a>
+    <a href="users.html" class="nav-item"><span class="nav-icon">👥</span> Customers</a>
+    <div class="nav-section-label">Manage</div>
+    <a href="services.html" class="nav-item"><span class="nav-icon">🧼</span> Services</a>
+    <a href="promos.html" class="nav-item"><span class="nav-icon">🎟️</span> Promo Codes</a>
+    <a href="reviews.html" class="nav-item"><span class="nav-icon">⭐</span> Reviews</a>
+    <div class="nav-section-label">Reports</div>
+    <a href="analytics.html" class="nav-item"><span class="nav-icon">📈</span> Analytics</a>
+    <a href="notifications.html" class="nav-item"><span class="nav-icon">🔔</span> Notifications<span class="nav-badge green" id="nav-notif-badge"></span></a>
+  </nav>
+  <div class="sidebar-footer">
+    <div class="admin-profile">
+      <div class="admin-avatar">SA</div>
+      <div class="admin-info"><div class="name">Super Admin</div><div class="role">Administrator</div></div>
+    </div>
+  </div>
+</aside>
+
+<div class="main-content">
+  <header class="topbar">
+    <button class="sidebar-toggle" id="sidebarToggle">☰</button>
+    <div class="topbar-left">
+      <div class="page-title">Orders</div>
+      <div class="page-subtitle">Manage and track all laundry orders</div>
+    </div>
+  </header>
+
+  <div class="page-body">
+
+    <!-- STAT STRIP -->
+    <div class="stats-grid" style="grid-template-columns:repeat(4,1fr);margin-bottom:24px;">
+      <div class="stat-card orange">
+        <div class="stat-top"><div class="stat-icon">📅</div></div>
+        <div class="stat-value" id="s-pending">0</div>
+        <div class="stat-label">Schedule</div>
+      </div>
+      <div class="stat-card blue">
+        <div class="stat-top"><div class="stat-icon">⚙️</div></div>
+        <div class="stat-value" id="s-processing">87</div>
+        <div class="stat-label">Processing</div>
+      </div>
+      <div class="stat-card purple">
+        <div class="stat-top"><div class="stat-icon">🚚</div></div>
+        <div class="stat-value" id="s-delivery">24</div>
+        <div class="stat-label">Out for Delivery</div>
+      </div>
+      <div class="stat-card green">
+        <div class="stat-top"><div class="stat-icon">✅</div></div>
+        <div class="stat-value" id="s-delivered">198</div>
+        <div class="stat-label">Delivered</div>
+      </div>
+    </div>
+
+    <!-- TOOLBAR ROW 1: Search + Filters -->
+    <div class="toolbar">
+      <div class="search-bar" style="flex:1;min-width:200px;">
+        <span class="search-icon">🔍</span>
+        <input type="text" placeholder="Search by order ID, customer…" id="orderSearch" />
+      </div>
+      <select class="form-control" id="serviceFilter" style="width:160px;">
+        <option value="">All Services</option>
+      </select>
+      <input type="date" class="form-control" id="dateFrom" title="From date" style="width:145px;" />
+      <input type="date" class="form-control" id="dateTo" title="To date" style="width:145px;" />
+      <button class="btn btn-outline btn-sm" id="exportBtn">📥 Export</button>
+    </div>
+
+    <!-- TOOLBAR ROW 2: Status chips -->
+    <div class="filter-chips mb-20" id="statusFilters">
+      <div class="filter-chip active" data-status="all">All</div>
+      <div class="filter-chip" data-status="schedule">Schedule</div>
+      <div class="filter-chip" data-status="confirm">Confirm</div>
+      <div class="filter-chip" data-status="collected">Collected</div>
+      <div class="filter-chip" data-status="processing">Processing</div>
+      <div class="filter-chip" data-status="ready">Ready</div>
+      <div class="filter-chip" data-status="out_for_delivery">Out for Delivery</div>
+      <div class="filter-chip" data-status="delivered">Delivered</div>
+      <div class="filter-chip" data-status="canceled">Canceled</div>
+    </div>
+
+    <!-- TABLE CARD -->
+    <div class="card">
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th style="width:42px">#</th>
+              <th style="width:110px">Order ID</th>
+              <th>Customer</th>
+              <th style="width:120px">Service</th>
+              <th style="width:64px">Weight</th>
+              <th style="width:88px">Total</th>
+              <th style="width:120px">Status</th>
+              <th style="width:106px">Scheduled</th>
+              <th style="width:82px">Actions</th>
+            </tr>
+          </thead>
+          <tbody id="orders-body"></tbody>
+        </table>
+      </div>
+      <div class="pagination">
+        <span class="page-info" id="page-info">Showing 0–0 of 0</span>
+        <button class="page-btn" id="prev-page" disabled>‹</button>
+        <div id="page-numbers" style="display:flex;gap:6px;"></div>
+        <button class="page-btn" id="next-page">›</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ORDER DETAIL MODAL -->
+<div class="modal-overlay" id="orderDetailModal">
+  <div class="modal modal-lg">
+    <div class="modal-header">
+      <div>
+        <div class="modal-title" id="modal-order-id">Order Details</div>
+        <div style="font-size:12px;color:var(--gray-500);margin-top:3px;" id="modal-order-date"></div>
+      </div>
+      <button class="modal-close" onclick="closeModal('orderDetailModal')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="grid-2" style="gap:24px;">
+        <div>
+          <div style="font-size:12px;font-weight:700;color:var(--gray-500);text-transform:uppercase;letter-spacing:.05em;margin-bottom:12px;">Customer Info</div>
+          <div class="d-flex ai-center gap-12 mb-4">
+            <div class="avatar lg" id="modal-avatar"></div>
+            <div>
+              <div class="fw-700" id="modal-customer-name" style="font-size:15px;"></div>
+              <div class="text-muted text-sm" id="modal-customer-email"></div>
+              <div class="text-muted text-sm" id="modal-customer-phone"></div>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div style="font-size:12px;font-weight:700;color:var(--gray-500);text-transform:uppercase;letter-spacing:.05em;margin-bottom:12px;">Order Summary</div>
+          <table style="font-size:13px;">
+            <tr><td style="padding:4px 0;color:var(--gray-500);">Service</td><td style="padding:4px 0 4px 12px;font-weight:600;" id="modal-service"></td></tr>
+            <tr><td style="padding:4px 0;color:var(--gray-500);">Weight</td><td style="padding:4px 0 4px 12px;font-weight:600;" id="modal-weight"></td></tr>
+            <tr><td style="padding:4px 0;color:var(--gray-500);">Subtotal</td><td style="padding:4px 0 4px 12px;" id="modal-subtotal"></td></tr>
+            <tr><td style="padding:4px 0;color:var(--gray-500);">Discount</td><td style="padding:4px 0 4px 12px;color:var(--green);" id="modal-discount"></td></tr>
+            <tr><td style="padding:4px 0;color:var(--gray-500);">Tax</td><td style="padding:4px 0 4px 12px;" id="modal-tax"></td></tr>
+            <tr><td style="padding:4px 0;font-weight:700;">Total</td><td style="padding:4px 0 4px 12px;font-weight:700;font-size:15px;color:var(--primary);" id="modal-total"></td></tr>
+          </table>
+        </div>
+      </div>
+      <hr style="margin:20px 0;border:none;border-top:1px solid var(--gray-100);" />
+      <div style="font-size:12px;font-weight:700;color:var(--gray-500);text-transform:uppercase;letter-spacing:.05em;margin-bottom:14px;">Order Timeline</div>
+      <div class="timeline" id="modal-timeline"></div>
+      <hr style="margin:20px 0;border:none;border-top:1px solid var(--gray-100);" />
+      <div style="font-size:12px;font-weight:700;color:var(--gray-500);text-transform:uppercase;letter-spacing:.05em;margin-bottom:12px;">Update Status</div>
+      <div id="modal-lock-msg" style="display:none;padding:10px 14px;border-radius:8px;font-size:13px;font-weight:600;margin-bottom:12px;"></div>
+      <div class="d-flex ai-center gap-12">
+        <select class="form-control" id="modal-status-select" style="flex:1;"></select>
+        <button class="btn btn-primary" id="modal-update-btn" onclick="updateOrderStatus()">Update Status</button>
+      </div>
+      <div class="form-group mt-16">
+        <label class="form-label">Note (optional)</label>
+        <input type="text" class="form-control" id="modal-status-note" placeholder="Add a note for this status change…" />
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('orderDetailModal')">Close</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast-container"></div>
+<script src="js/admin.js"></script>
+<script src="js/orders.js"></script>
+</body>
+</html>

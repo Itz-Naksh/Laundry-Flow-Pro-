@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Notifications — Laundry Flow Pro</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link rel="stylesheet" href="css/style.css" />
+  <style>
+    /* ── Page Layout ─────────────────────────────────────────────────────── */
+    body { background: #f3f4f6; }
+
+    .notif-page {
+      max-width: 760px;
+      margin: 100px auto 60px;
+      padding: 0 20px;
+    }
+
+    /* ── Page Header ─────────────────────────────────────────────────────── */
+    .notif-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .notif-title {
+      font-size: 22px;
+      font-weight: 700;
+      color: #111827;
+    }
+    .notif-title span {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: #2563eb;
+      color: #fff;
+      font-size: 12px;
+      font-weight: 700;
+      border-radius: 99px;
+      padding: 2px 9px;
+      margin-left: 8px;
+      vertical-align: middle;
+    }
+    .notif-header-actions { display: flex; gap: 10px; }
+
+    /* ── Filter Chips ────────────────────────────────────────────────────── */
+    .filter-row {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 20px;
+    }
+    .f-chip {
+      padding: 6px 14px;
+      border-radius: 99px;
+      border: 1.5px solid #e5e7eb;
+      background: #fff;
+      color: #6b7280;
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all .15s;
+    }
+    .f-chip:hover { border-color: #93c5fd; color: #2563eb; }
+    .f-chip.active { background: #2563eb; color: #fff; border-color: #2563eb; }
+
+    /* ── Notification Cards ──────────────────────────────────────────────── */
+    .notif-list { display: flex; flex-direction: column; gap: 10px; }
+
+    .notif-card {
+      background: #fff;
+      border-radius: 12px;
+      border: 1.5px solid #e5e7eb;
+      display: flex;
+      gap: 14px;
+      padding: 16px 18px;
+      cursor: pointer;
+      transition: box-shadow .15s, border-color .15s;
+      position: relative;
+    }
+    .notif-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,.06); border-color: #93c5fd; }
+    .notif-card.unread { border-left: 3px solid #2563eb; }
+    .notif-card.unread .notif-subject { color: #111827; font-weight: 700; }
+
+    .notif-icon {
+      width: 42px; height: 42px;
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 20px;
+      flex-shrink: 0;
+    }
+    .notif-icon.welcome   { background: #eff6ff; }
+    .notif-icon.order     { background: #f0fdf4; }
+    .notif-icon.promo     { background: #fefce8; }
+    .notif-icon.review    { background: #fdf4ff; }
+    .notif-icon.system    { background: #f9fafb; }
+
+    .notif-body   { flex: 1; min-width: 0; }
+    .notif-subject { font-size: 14px; font-weight: 600; color: #374151; margin-bottom: 3px; }
+    .notif-msg    { font-size: 13px; color: #6b7280; line-height: 1.5; }
+    .notif-meta   { display: flex; align-items: center; gap: 10px; margin-top: 6px; }
+    .notif-time   { font-size: 12px; color: #9ca3af; }
+    .unread-dot   {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: #2563eb; flex-shrink: 0;
+    }
+
+    .notif-actions {
+      display: flex; flex-direction: column;
+      align-items: flex-end; gap: 8px; flex-shrink: 0;
+    }
+    .del-btn {
+      background: none; border: none; cursor: pointer;
+      color: #d1d5db; font-size: 15px; padding: 2px 6px;
+      border-radius: 6px; transition: color .15s, background .15s;
+    }
+    .del-btn:hover { color: #ef4444; background: #fef2f2; }
+
+    /* ── Empty State ─────────────────────────────────────────────────────── */
+    .empty-notif {
+      text-align: center; padding: 60px 20px; color: #9ca3af;
+    }
+    .empty-notif i { font-size: 48px; margin-bottom: 16px; color: #d1d5db; }
+    .empty-notif p { font-size: 15px; margin: 0; }
+
+    /* ── Loading ─────────────────────────────────────────────────────────── */
+    .loading-notif { text-align: center; padding: 40px; color: #9ca3af; font-size: 14px; }
+
+    /* ── Button Styles ───────────────────────────────────────────────────── */
+    .btn-notif-outline {
+      padding: 8px 16px; border-radius: 8px;
+      border: 1.5px solid #e5e7eb; background: #fff;
+      color: #374151; font-size: 13px; font-weight: 500;
+      cursor: pointer; transition: all .15s;
+    }
+    .btn-notif-outline:hover { border-color: #2563eb; color: #2563eb; }
+
+    /* ── Toast ───────────────────────────────────────────────────────────── */
+    #toast-box {
+      position: fixed; bottom: 28px; right: 28px; z-index: 9999;
+      display: flex; flex-direction: column; gap: 8px;
+    }
+    .toast {
+      padding: 12px 18px; border-radius: 10px; font-size: 14px;
+      font-weight: 500; color: #fff; box-shadow: 0 4px 16px rgba(0,0,0,.12);
+      animation: slideIn .2s ease;
+    }
+    .toast.success { background: #16a34a; }
+    .toast.error   { background: #dc2626; }
+    @keyframes slideIn { from { transform: translateX(60px); opacity: 0; } to { transform: none; opacity: 1; } }
+
+    /* Responsive */
+    @media (max-width: 600px) {
+      .notif-page { margin-top: 80px; }
+      .notif-title { font-size: 18px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ══ NAVBAR ══════════════════════════════════════════════════════════════ -->
+  <nav class="navbar scrolled" id="navbar">
+    <div class="container nav-inner">
+      <a href="index.html" class="nav-brand">
+        <div class="brand-icon"><i class="fas fa-tshirt"></i></div>
+        <span>Laundry<span class="brand-accent">Flow</span> Pro</span>
+      </a>
+      <div class="nav-actions" style="margin-left:auto;gap:10px;display:flex;align-items:center;">
+        <a href="profile.html" class="btn btn-ghost"><i class="fas fa-user"></i> Account</a>
+        <a href="services.html" class="btn btn-ghost"><i class="fas fa-tshirt"></i> Services</a>
+        <button class="btn btn-ghost" id="nav-logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ══ MAIN ════════════════════════════════════════════════════════════════ -->
+  <main class="notif-page">
+    <div class="notif-header">
+      <div class="notif-title">
+        Notifications
+        <span id="unread-badge" style="display:none;">0</span>
+      </div>
+      <div class="notif-header-actions">
+        <button class="btn-notif-outline" onclick="markAllRead()">
+          <i class="fas fa-check-double"></i> Mark All Read
+        </button>
+      </div>
+    </div>
+
+    <!-- Filter Chips -->
+    <div class="filter-row" id="filterRow">
+      <div class="f-chip active" data-filter="all">All</div>
+      <div class="f-chip" data-filter="unread">Unread</div>
+      <div class="f-chip" data-filter="order">Orders</div>
+      <div class="f-chip" data-filter="promo">Promotions</div>
+      <div class="f-chip" data-filter="review">Reviews</div>
+      <div class="f-chip" data-filter="welcome">Welcome</div>
+    </div>
+
+    <!-- Feed -->
+    <div class="notif-list" id="notifList">
+      <div class="loading-notif"><i class="fas fa-spinner fa-spin"></i> Loading…</div>
+    </div>
+  </main>
+
+  <div id="toast-box"></div>
+
+  <script src="js/config.js"></script>
+  <script src="js/notifications.js"></script>
+</body>
+</html>

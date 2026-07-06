@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Laundry Flow Pro – Premium laundry pickup and delivery service." />
+  <title>Laundry Flow Pro – Premium Laundry Service</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <!-- ═══════════════════════════ NAVBAR ═══════════════════════════ -->
+  <nav class="navbar" id="navbar">
+    <div class="container nav-inner">
+      <a href="index.html" class="nav-brand">
+        <div class="brand-icon"><i class="fas fa-tshirt"></i></div>
+        <span>Laundry<span class="brand-accent">Flow</span> Pro</span>
+      </a>
+
+      <ul class="nav-links" id="nav-links">
+        <li><a href="#home"         class="nav-link">Home</a></li>
+        <li><a href="#how-it-works" class="nav-link">How It Works</a></li>
+        <li><a href="#services"     class="nav-link">Services</a></li>
+        <li><a href="#testimonials" class="nav-link">Reviews</a></li>
+        <li><a href="#faq"          class="nav-link">FAQ</a></li>
+      </ul>
+
+      <div class="nav-actions" id="nav-actions">
+
+        <!-- ── Shown when NOT logged in ── -->
+        <div id="nav-guest">
+          <a href="login.html"  class="btn btn-ghost">Login</a>
+          <a href="signup.html" class="btn btn-primary">Get Started</a>
+        </div>
+
+        <!-- ── Shown when logged in (hidden until JS runs) ── -->
+        <div id="nav-auth" style="display:none;align-items:center;gap:0.75rem;">
+          <a href="profile.html" class="btn btn-ghost" id="nav-profile-btn"
+             style="display:flex;align-items:center;gap:0.4rem;">
+            <i class="fas fa-user-circle" style="font-size:1.15rem;"></i>
+            <span id="nav-user-greeting">Profile</span>
+          </a>
+          <button class="btn btn-primary" id="nav-logout-btn">
+            <i class="fas fa-sign-out-alt"></i> Logout
+          </button>
+        </div>
+
+      </div>
+
+      <button class="hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- ═══════════════════════════ HERO ═══════════════════════════ -->
+  <section class="hero" id="home">
+    <!-- Decorative background blobs -->
+    <div class="hero-blob blob-1"></div>
+    <div class="hero-blob blob-2"></div>
+    <div class="hero-blob blob-3"></div>
+
+    <div class="container hero-grid">
+      <!-- Left: Text -->
+      <div class="hero-text" data-animate="fade-up">
+        <div class="hero-badge">
+          <i class="fas fa-star"></i>&nbsp; Trusted by 50,000+ customers
+        </div>
+
+        <h1 class="hero-heading">
+          Fresh &amp; Clean,<br />
+          <span class="gradient-text">Delivered to</span><br />
+          Your Door
+        </h1>
+
+        <p class="hero-sub">
+          Professional laundry service with free pickup &amp; delivery.
+          Schedule in minutes, get fresh clothes in 24 hours.
+        </p>
+
+        <div class="hero-cta-wrap">
+          <a href="services.html" class="btn btn-primary btn-lg">
+            <i class="fas fa-calendar-check"></i> Schedule Pickup
+          </a>
+          <a href="#how-it-works" class="btn btn-outline btn-lg">
+            <i class="fas fa-play-circle"></i> How It Works
+          </a>
+        </div>
+
+        <div class="hero-stats">
+          <div class="stat">
+            <div class="stat-top"><span class="stat-num" data-target="50000">0</span><span class="stat-suffix">K+</span></div>
+            <span class="stat-lbl">Happy Customers</span>
+          </div>
+          <div class="stat-sep"></div>
+          <div class="stat">
+            <div class="stat-top"><span class="stat-num">24</span><span class="stat-suffix">h</span></div>
+            <span class="stat-lbl">Turnaround</span>
+          </div>
+          <div class="stat-sep"></div>
+          <div class="stat">
+            <div class="stat-top"><span class="stat-num">4.9</span><span class="stat-suffix">★</span></div>
+            <span class="stat-lbl">Average Rating</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: Visual -->
+      <div class="hero-visual" data-animate="fade-left">
+        <!-- Orbiting circle -->
+        <div class="orbit-wrap">
+          <div class="orbit-ring ring-1"></div>
+          <div class="orbit-ring ring-2"></div>
+          <div class="orbit-core">
+            <i class="fas fa-tshirt"></i>
+            <span>Laundry Flow Pro</span>
+          </div>
+          <div class="orbit-dot dot-1"><i class="fas fa-truck"></i></div>
+          <div class="orbit-dot dot-2"><i class="fas fa-soap"></i></div>
+          <div class="orbit-dot dot-3"><i class="fas fa-star"></i></div>
+          <div class="orbit-dot dot-4"><i class="fas fa-bolt"></i></div>
+        </div>
+
+        <!-- Floating cards -->
+        <div class="float-card card-top">
+          <div class="fc-icon fc-green"><i class="fas fa-check-circle"></i></div>
+          <div>
+            <p class="fc-title">Order Picked Up!</p>
+            <p class="fc-sub">Processing at facility</p>
+          </div>
+        </div>
+
+        <div class="float-card card-bottom">
+          <div class="fc-icon fc-blue"><i class="fas fa-clock"></i></div>
+          <div>
+            <p class="fc-title">Ready in 24 hrs</p>
+            <p class="fc-sub">Express delivery</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scroll indicator -->
+    <div class="scroll-hint">
+      <div class="scroll-mouse"><div class="scroll-wheel"></div></div>
+      <span>Scroll to explore</span>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════ HOW IT WORKS ═══════════════════════ -->
+  <section class="section hiw" id="how-it-works">
+    <div class="container">
+      <div class="sec-header">
+        <span class="sec-badge">Simple Process</span>
+        <h2 class="sec-title">How It Works</h2>
+        <p class="sec-sub">Get your laundry done in just 4 easy steps</p>
+      </div>
+
+      <div class="steps-row">
+        <div class="step-connector-line"></div>
+
+        <div class="step-card" data-animate="fade-up" data-delay="0">
+          <div class="step-num">01</div>
+          <div class="step-icon-box clr-blue">
+            <i class="fas fa-calendar-alt"></i>
+          </div>
+          <h3>Schedule Pickup</h3>
+          <p>Book a convenient pickup time through our app. We work around your schedule, 7 days a week.</p>
+        </div>
+
+        <div class="step-card" data-animate="fade-up" data-delay="120">
+          <div class="step-num">02</div>
+          <div class="step-icon-box clr-purple">
+            <i class="fas fa-soap"></i>
+          </div>
+          <h3>Laundry Processing</h3>
+          <p>Our experts clean, wash, dry and fold your clothes using premium detergents with care.</p>
+        </div>
+
+        <div class="step-card" data-animate="fade-up" data-delay="240">
+          <div class="step-num">03</div>
+          <div class="step-icon-box clr-cyan">
+            <i class="fas fa-map-marker-alt"></i>
+          </div>
+          <h3>Order Tracking</h3>
+          <p>Track your order in real-time. Get SMS and email notifications at every milestone.</p>
+        </div>
+
+        <div class="step-card" data-animate="fade-up" data-delay="360">
+          <div class="step-num">04</div>
+          <div class="step-icon-box clr-green">
+            <i class="fas fa-truck"></i>
+          </div>
+          <h3>Door Delivery</h3>
+          <p>Fresh, folded clothes delivered right to your door within 24 hours of pickup. Guaranteed.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════ SERVICES ═══════════════════════════ -->
+  <section class="section services" id="services">
+    <div class="container">
+      <div class="sec-header">
+        <span class="sec-badge">What We Offer</span>
+        <h2 class="sec-title">Our Services</h2>
+        <p class="sec-sub">Professional laundry care for every need</p>
+      </div>
+
+      <div class="services-grid">
+
+        <div class="svc-card" data-animate="fade-up" data-service-id="1">
+          <div class="svc-icon" style="--ic:#2563EB;--ib:#EFF6FF"><i class="fas fa-tshirt"></i></div>
+          <h3>Wash &amp; Fold</h3>
+          <p>Everyday laundry washed, dried, and neatly folded. Perfect for clothes, linens and more.</p>
+          <ul class="svc-list">
+            <li><i class="fas fa-check"></i> Sorted by colour &amp; fabric</li>
+            <li><i class="fas fa-check"></i> Premium detergents</li>
+            <li><i class="fas fa-check"></i> Neatly folded</li>
+          </ul>
+          <a href="#" class="svc-link book-now-link">Book Now <i class="fas fa-arrow-right"></i></a>
+        </div>
+
+        <div class="svc-card svc-featured" data-animate="fade-up" data-delay="80" data-service-id="2">
+          <span class="svc-popular">Most Popular</span>
+          <div class="svc-icon" style="--ic:#7C3AED;--ib:#F5F3FF"><i class="fas fa-gem"></i></div>
+          <h3>Dry Cleaning</h3>
+          <p>Expert dry cleaning for delicate and formal garments — suits, dresses, specialty items.</p>
+          <ul class="svc-list">
+            <li><i class="fas fa-check"></i> Delicate fabric care</li>
+            <li><i class="fas fa-check"></i> Stain treatment</li>
+            <li><i class="fas fa-check"></i> Professional pressing</li>
+          </ul>
+          <a href="#" class="svc-link book-now-link">Book Now <i class="fas fa-arrow-right"></i></a>
+        </div>
+
+        <div class="svc-card" data-animate="fade-up" data-delay="160" data-service-id="3">
+          <div class="svc-icon" style="--ic:#059669;--ib:#ECFDF5"><i class="fas fa-wind"></i></div>
+          <h3>Steam Ironing</h3>
+          <p>Professional steam ironing for wrinkle-free, crisp clothes every time. Look your best.</p>
+          <ul class="svc-list">
+            <li><i class="fas fa-check"></i> Steam pressed</li>
+            <li><i class="fas fa-check"></i> Crease-free finish</li>
+            <li><i class="fas fa-check"></i> All fabric types</li>
+          </ul>
+          <a href="#" class="svc-link book-now-link">Book Now <i class="fas fa-arrow-right"></i></a>
+        </div>
+
+        <div class="svc-card" data-animate="fade-up" data-delay="240" data-service-id="4">
+          <div class="svc-icon" style="--ic:#D97706;--ib:#FFFBEB"><i class="fas fa-bed"></i></div>
+          <h3>Bedding &amp; Linen</h3>
+          <p>Refresh your bedding, curtains, and household linens. Deep clean for a healthier home.</p>
+          <ul class="svc-list">
+            <li><i class="fas fa-check"></i> Large item capable</li>
+            <li><i class="fas fa-check"></i> Anti-allergen wash</li>
+            <li><i class="fas fa-check"></i> Bulk orders welcome</li>
+          </ul>
+          <a href="#" class="svc-link book-now-link">Book Now <i class="fas fa-arrow-right"></i></a>
+        </div>
+
+        <div class="svc-card" data-animate="fade-up" data-delay="320" data-service-id="5">
+          <div class="svc-icon" style="--ic:#DC2626;--ib:#FEF2F2"><i class="fas fa-magic"></i></div>
+          <h3>Stain Removal</h3>
+          <p>Specialised treatment for tough stains. We handle wine, grease, ink and more expertly.</p>
+          <ul class="svc-list">
+            <li><i class="fas fa-check"></i> Pre-treatment</li>
+            <li><i class="fas fa-check"></i> Eco-safe chemicals</li>
+            <li><i class="fas fa-check"></i> High success rate</li>
+          </ul>
+          <a href="#" class="svc-link book-now-link">Book Now <i class="fas fa-arrow-right"></i></a>
+        </div>
+
+        <div class="svc-card" data-animate="fade-up" data-delay="400" data-service-id="6">
+          <div class="svc-icon" style="--ic:#0891B2;--ib:#ECFEFF"><i class="fas fa-bolt"></i></div>
+          <h3>Express Service</h3>
+          <p>Need it fast? Our express service guarantees same-day turnaround for urgent situations.</p>
+          <ul class="svc-list">
+            <li><i class="fas fa-check"></i> Same-day delivery</li>
+            <li><i class="fas fa-check"></i> Priority processing</li>
+            <li><i class="fas fa-check"></i> 24/7 available</li>
+          </ul>
+          <a href="#" class="svc-link book-now-link">Book Now <i class="fas fa-arrow-right"></i></a>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════ TESTIMONIALS ═══════════════════════ -->
+  <section class="section testimonials" id="testimonials">
+    <div class="container">
+      <div class="sec-header">
+        <span class="sec-badge">What Customers Say</span>
+        <h2 class="sec-title">Real Reviews</h2>
+        <p class="sec-sub">Don't just take our word for it</p>
+      </div>
+
+      <div class="carousel-wrap">
+        <div class="carousel-track" id="carousel-track">
+          <!-- Populated dynamically from /api/reviews/featured -->
+          <div class="testi-card" style="text-align:center;padding:40px 24px;">
+            <div style="color:#94A3B8;font-size:14px;">Loading reviews…</div>
+          </div>
+        </div><!-- /.carousel-track -->
+
+        <div class="carousel-nav">
+          <button class="car-btn" id="car-prev" aria-label="Previous slide"><i class="fas fa-chevron-left"></i></button>
+          <div class="car-dots" id="car-dots"></div>
+          <button class="car-btn" id="car-next" aria-label="Next slide"><i class="fas fa-chevron-right"></i></button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════ FAQ ═══════════════════════════ -->
+  <section class="section faq" id="faq">
+    <div class="container">
+      <div class="sec-header">
+        <span class="sec-badge">Got Questions?</span>
+        <h2 class="sec-title">Frequently Asked Questions</h2>
+        <p class="sec-sub">Everything you need to know</p>
+      </div>
+
+      <div class="faq-list">
+
+        <div class="faq-item" data-animate="fade-up">
+          <button class="faq-q" aria-expanded="false">
+            <span>How does pickup scheduling work?</span>
+            <span class="faq-ico"><i class="fas fa-plus"></i></span>
+          </button>
+          <div class="faq-a" role="region">
+            <p>Scheduling is simple! Sign up, select your preferred date &amp; time window, and our driver arrives at your door. We offer morning (8AM–12PM), afternoon (12PM–5PM), and evening (5PM–8PM) slots, 7 days a week.</p>
+          </div>
+        </div>
+
+        <div class="faq-item" data-animate="fade-up" data-delay="60">
+          <button class="faq-q" aria-expanded="false">
+            <span>How long does the service take?</span>
+            <span class="faq-ico"><i class="fas fa-plus"></i></span>
+          </button>
+          <div class="faq-a" role="region">
+            <p>Standard service has a 24-hour turnaround from pickup. Express guarantees same-day return (within 8 hours). Premium subscribers enjoy priority processing with guaranteed 24 h service.</p>
+          </div>
+        </div>
+
+        <div class="faq-item" data-animate="fade-up" data-delay="120">
+          <button class="faq-q" aria-expanded="false">
+            <span>What detergents and products do you use?</span>
+            <span class="faq-ico"><i class="fas fa-plus"></i></span>
+          </button>
+          <div class="faq-a" role="region">
+            <p>We use premium eco-friendly detergents that are gentle on fabrics and safe for sensitive skin. Fragrance-free options are also available. All products are biodegradable and environmentally responsible.</p>
+          </div>
+        </div>
+
+        <div class="faq-item" data-animate="fade-up" data-delay="180">
+          <button class="faq-q" aria-expanded="false">
+            <span>Is my laundry safe and secure?</span>
+            <span class="faq-ico"><i class="fas fa-plus"></i></span>
+          </button>
+          <div class="faq-a" role="region">
+            <p>Absolutely. Your laundry is always kept separate from other customers' items. We use individual wash bags labelled with your order ID. All staff are background-checked and trained professionals.</p>
+          </div>
+        </div>
+
+        <div class="faq-item" data-animate="fade-up" data-delay="240">
+          <button class="faq-q" aria-expanded="false">
+            <span>What if an item is damaged or lost?</span>
+            <span class="faq-ico"><i class="fas fa-plus"></i></span>
+          </button>
+          <div class="faq-a" role="region">
+            <p>We take full responsibility for any damage or loss. Items are inspected at pickup and delivery. In the rare event of damage we offer up to $250 reimbursement per item, covered by our comprehensive insurance.</p>
+          </div>
+        </div>
+
+        <div class="faq-item" data-animate="fade-up" data-delay="300">
+          <button class="faq-q" aria-expanded="false">
+            <span>Can I cancel or reschedule my order?</span>
+            <span class="faq-ico"><i class="fas fa-plus"></i></span>
+          </button>
+          <div class="faq-a" role="region">
+            <p>Yes! You can cancel or reschedule up to 2 hours before the scheduled time at no charge. Changes within 2 hours may incur a small $5 rescheduling fee. Simply log in or contact our support team.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════ CTA BANNER ═══════════════════════════ -->
+  <section class="cta-banner">
+    <div class="cta-blob cta-blob-1"></div>
+    <div class="cta-blob cta-blob-2"></div>
+    <div class="container cta-inner" data-animate="fade-up">
+      <h2>Ready for Freshly Clean Clothes?</h2>
+      <p>Join thousands of happy customers. Your first pickup is <strong>FREE!</strong></p>
+      <a href="services.html" class="btn btn-white btn-lg">
+        <i class="fas fa-calendar-check"></i> Schedule Your First Pickup
+      </a>
+      <p class="cta-note"><i class="fas fa-shield-alt"></i> No commitment. Cancel anytime.</p>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════ FOOTER ═══════════════════════════ -->
+  <footer class="footer" id="contact">
+    <div class="container">
+      <div class="footer-grid">
+
+        <div class="footer-brand-col">
+          <div class="footer-logo">
+            <div class="brand-icon"><i class="fas fa-tshirt"></i></div>
+            <span>Laundry<span class="brand-accent">Flow</span> Pro</span>
+          </div>
+          <p>Premium laundry service delivered to your door. Clean clothes, happy life.</p>
+          <div class="socials">
+            <a href="#" class="soc-link" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+            <a href="#" class="soc-link" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+            <a href="#" class="soc-link" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+            <a href="#" class="soc-link" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+          </div>
+        </div>
+
+        <div class="footer-col">
+          <h4>Quick Links</h4>
+          <ul>
+            <li><a href="#home">Home</a></li>
+            <li><a href="#how-it-works">How It Works</a></li>
+            <li><a href="#services">Services</a></li>
+            <li><a href="#testimonials">Reviews</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>Services</h4>
+          <ul>
+            <li><a href="#">Wash &amp; Fold</a></li>
+            <li><a href="#">Dry Cleaning</a></li>
+            <li><a href="#">Steam Ironing</a></li>
+            <li><a href="#">Bedding &amp; Linen</a></li>
+            <li><a href="#">Express Service</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>Contact Us</h4>
+          <ul class="contact-list">
+            <li><i class="fas fa-map-marker-alt"></i> 123 Clean Street, Wash City, CA 90210</li>
+            <li><i class="fas fa-phone"></i> +1 (555) 123-4567</li>
+            <li><i class="fas fa-envelope"></i> hello@laundryflopro.com</li>
+            <li><i class="fas fa-clock"></i> Mon–Sun: 7AM – 9PM</li>
+          </ul>
+        </div>
+
+      </div>
+
+      <div class="footer-bottom">
+        <p>© 2026 Laundry Flow Pro. All rights reserved.</p>
+        <div class="footer-legal">
+          <a href="#">Privacy Policy</a>
+          <a href="#">Terms of Service</a>
+          <a href="#">Cookie Policy</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Toast container -->
+  <div id="toast-wrap" aria-live="polite"></div>
+
+  <!-- Back to top -->
+  <button class="back-top" id="back-top" aria-label="Back to top">
+    <i class="fas fa-chevron-up"></i>
+  </button>
+
+  <script src="js/config.js"></script>
+  <script src="js/notif-bell.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

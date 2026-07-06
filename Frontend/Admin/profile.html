@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My Profile — Laundry Flow Pro Admin</title>
+  <link rel="stylesheet" href="css/admin.css" />
+  <style>
+    /* ── Profile page supplement ───────────────────────────────── */
+
+    /* Avatar card */
+    .profile-hero {
+      display: flex; align-items: center; gap: 24px;
+      padding: 28px 28px 24px;
+      background: linear-gradient(135deg, var(--dark) 0%, #1a2942 100%);
+      border-radius: var(--radius-md);
+      border: 1px solid rgba(37,99,235,.18);
+      margin-bottom: 24px; position: relative; overflow: hidden;
+    }
+    .profile-hero::before {
+      content: ''; position: absolute; inset: 0;
+      background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%232563EB' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+      pointer-events: none;
+    }
+
+    .hero-avatar-wrap { position: relative; flex-shrink: 0; }
+    .hero-avatar {
+      width: 88px; height: 88px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 28px; font-weight: 800; color: var(--white);
+      border: 3px solid rgba(255,255,255,.12);
+      overflow: hidden;
+    }
+    .hero-avatar img { width: 100%; height: 100%; object-fit: cover; display: none; }
+    .hero-avatar img.loaded { display: block; }
+
+    .avatar-upload-label {
+      position: absolute; bottom: 0; right: 0;
+      width: 28px; height: 28px; border-radius: 50%;
+      background: var(--primary);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 11px; color: var(--white);
+      cursor: pointer; transition: var(--transition);
+      border: 2px solid var(--dark);
+    }
+    .avatar-upload-label:hover { background: var(--primary-dark); transform: scale(1.1); }
+
+    .hero-info { flex: 1; position: relative; z-index: 1; }
+    .hero-name { font-size: 22px; font-weight: 800; color: var(--white); margin-bottom: 4px; }
+    .hero-email { font-size: 13px; color: var(--gray-400); margin-bottom: 10px; }
+    .hero-meta { display: flex; gap: 12px; flex-wrap: wrap; }
+    .hero-chip {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: 12px; font-weight: 600; padding: 4px 12px;
+      border-radius: 20px;
+    }
+    .hero-chip.role  { background: rgba(37,99,235,.2); color: #93C5FD; }
+    .hero-chip.since { background: rgba(255,255,255,.06); color: var(--gray-400); }
+
+    .upload-progress {
+      font-size: 12px; color: var(--accent);
+      margin-top: 8px; display: none;
+    }
+    .upload-progress.show { display: block; }
+
+    /* Stats row */
+    .profile-stats {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 16px; margin-bottom: 24px;
+    }
+    .pstat {
+      background: var(--white);
+      border: 1px solid var(--gray-200);
+      border-radius: var(--radius-md);
+      padding: 20px 22px;
+      text-align: center;
+    }
+    .pstat-value { font-size: 24px; font-weight: 800; color: var(--gray-900); }
+    .pstat-label { font-size: 12px; color: var(--gray-500); margin-top: 4px; font-weight: 500; }
+
+    /* Section card heading */
+    .section-head {
+      display: flex; align-items: center; gap: 10px;
+      font-size: 15px; font-weight: 700; color: var(--gray-900);
+      padding: 20px 24px 0;
+    }
+    .section-head .sicon {
+      width: 32px; height: 32px; border-radius: 8px;
+      background: var(--primary-light);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 15px;
+    }
+
+    /* Form rows */
+    .pform { padding: 20px 24px 24px; }
+    .pform .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+
+    .pform .form-group { margin-bottom: 0; }
+
+    .pform .input-icon { position: relative; }
+    .pform .input-icon i {
+      position: absolute; left: 12px; top: 50%; transform: translateY(-50%);
+      color: var(--gray-400); font-size: 14px; pointer-events: none;
+    }
+    .pform .input-icon .form-control { padding-left: 36px; }
+    .pform .input-icon .form-control.readonly-field {
+      background: var(--gray-50); color: var(--gray-500); cursor: not-allowed;
+    }
+
+    .field-error { font-size: 12px; color: var(--red); margin-top: 4px; display: none; }
+    .field-error.show { display: block; }
+
+    /* Password strength bar */
+    .pw-strength { margin-top: 6px; }
+    .pw-strength-bar {
+      height: 4px; background: var(--gray-200);
+      border-radius: 2px; overflow: hidden; margin-bottom: 4px;
+    }
+    .pw-strength-fill {
+      height: 100%; border-radius: 2px;
+      background: var(--red); width: 0; transition: width .3s, background .3s;
+    }
+    .pw-strength-fill.s1 { width: 25%; background: var(--red); }
+    .pw-strength-fill.s2 { width: 50%; background: var(--orange); }
+    .pw-strength-fill.s3 { width: 75%; background: #EAB308; }
+    .pw-strength-fill.s4 { width: 100%; background: var(--green); }
+    .pw-strength-text { font-size: 11px; color: var(--gray-500); }
+
+    /* Pw toggle within admin form */
+    .pw-wrap { position: relative; }
+    .pw-wrap .form-control { padding-right: 42px; }
+    .pw-wrap .pw-eye {
+      position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
+      color: var(--gray-400); font-size: 14px; cursor: pointer;
+      background: none; border: none; padding: 4px;
+      transition: var(--transition);
+    }
+    .pw-wrap .pw-eye:hover { color: var(--gray-700); }
+
+    /* Save bar */
+    .save-bar {
+      display: flex; justify-content: flex-end; gap: 10px;
+      padding: 0 24px 24px;
+    }
+
+    /* Spinner in btn */
+    .btn .btn-spin {
+      width: 14px; height: 14px; border-radius: 50%;
+      border: 2px solid rgba(255,255,255,.35); border-top-color: #fff;
+      animation: spin .7s linear infinite; display: none;
+    }
+    .btn .btn-spin.show { display: inline-block; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    @media (max-width: 700px) {
+      .profile-hero { flex-direction: column; text-align: center; }
+      .hero-meta { justify-content: center; }
+      .profile-stats { grid-template-columns: 1fr 1fr; }
+      .pform .form-row { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 480px) {
+      .profile-stats { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-logo">
+    <div class="logo-icon">🧺</div>
+    <div>
+      <div class="logo-text">Laundry <span>Flow</span> Pro</div>
+      <span class="badge">Admin Panel</span>
+    </div>
+  </div>
+
+  <nav class="sidebar-nav">
+    <div class="nav-section-label">Main</div>
+    <a href="dashboard.html" class="nav-item">
+      <span class="nav-icon">📊</span> Dashboard
+    </a>
+    <a href="orders.html" class="nav-item">
+      <span class="nav-icon">📦</span> Orders
+      <span class="nav-badge" id="nav-pending-badge"></span>
+    </a>
+    <a href="users.html" class="nav-item">
+      <span class="nav-icon">👥</span> Customers
+    </a>
+
+    <div class="nav-section-label">Manage</div>
+    <a href="services.html" class="nav-item">
+      <span class="nav-icon">🧼</span> Services
+    </a>
+    <a href="promos.html" class="nav-item">
+      <span class="nav-icon">🎟️</span> Promo Codes
+    </a>
+    <a href="reviews.html" class="nav-item">
+      <span class="nav-icon">⭐</span> Reviews
+    </a>
+
+    <div class="nav-section-label">Reports</div>
+    <a href="analytics.html" class="nav-item">
+      <span class="nav-icon">📈</span> Analytics
+    </a>
+    <a href="notifications.html" class="nav-item">
+      <span class="nav-icon">🔔</span> Notifications
+      <span class="nav-badge green" id="nav-notif-badge"></span>
+    </a>
+  </nav>
+
+  <div class="sidebar-footer">
+    <div class="admin-profile">
+      <div class="admin-avatar" id="sb-avatar">SA</div>
+      <div class="admin-info">
+        <div class="name" id="sb-name">Loading…</div>
+        <div class="role">Administrator</div>
+      </div>
+      <span style="color:var(--gray-500);font-size:14px;">⋯</span>
+    </div>
+  </div>
+</aside>
+
+<!-- MAIN -->
+<div class="main-content">
+  <header class="topbar">
+    <button class="sidebar-toggle" id="sidebarToggle">☰</button>
+    <div class="topbar-left">
+      <div class="page-title">My Profile</div>
+      <div class="page-subtitle">Manage your account information and security</div>
+    </div>
+  </header>
+
+  <div class="page-body">
+
+    <!-- Avatar hero -->
+    <div class="profile-hero">
+      <div class="hero-avatar-wrap">
+        <div class="hero-avatar" id="hero-avatar">
+          <span id="hero-initials">SA</span>
+          <img id="hero-img" src="" alt="Avatar" />
+        </div>
+        <label class="avatar-upload-label" for="avatar-input" title="Change photo">
+          <i class="fas fa-camera"></i>
+        </label>
+        <input type="file" id="avatar-input" accept="image/jpeg,image/png,image/webp" style="display:none;" />
+      </div>
+      <div class="hero-info">
+        <div class="hero-name" id="hero-name">Loading…</div>
+        <div class="hero-email" id="hero-email">—</div>
+        <div class="hero-meta">
+          <span class="hero-chip role"><i class="fas fa-shield-halved"></i> <span id="hero-role">Administrator</span></span>
+          <span class="hero-chip since"><i class="fas fa-calendar"></i> Member since <span id="hero-since">—</span></span>
+        </div>
+        <div class="upload-progress" id="upload-progress">⬆ Uploading photo…</div>
+      </div>
+    </div>
+
+    <!-- Stats row -->
+    <div class="profile-stats" id="profile-stats">
+      <div class="pstat">
+        <div class="pstat-value" id="stat-id">—</div>
+        <div class="pstat-label">Account ID</div>
+      </div>
+      <div class="pstat">
+        <div class="pstat-value" id="stat-role-id">—</div>
+        <div class="pstat-label">Role Level</div>
+      </div>
+      <div class="pstat">
+        <div class="pstat-value" id="stat-status">—</div>
+        <div class="pstat-label">Account Status</div>
+      </div>
+    </div>
+
+    <!-- Personal info card -->
+    <div class="card" style="margin-bottom:20px;">
+      <div class="section-head">
+        <div class="sicon">👤</div>
+        <div>
+          <div style="font-size:15px;font-weight:700;">Personal Information</div>
+          <div class="card-subtitle">Update your name, phone, and address</div>
+        </div>
+      </div>
+      <form id="profile-form" novalidate>
+        <div class="pform">
+          <div class="form-row" style="margin-bottom:16px;">
+            <div class="form-group">
+              <label class="form-label">First Name</label>
+              <div class="input-icon">
+                <i class="fas fa-user"></i>
+                <input type="text" id="firstName" name="first_name" class="form-control"
+                       placeholder="First name" autocomplete="given-name" />
+              </div>
+              <div class="field-error" id="err-firstName"></div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Last Name</label>
+              <div class="input-icon">
+                <i class="fas fa-user"></i>
+                <input type="text" id="lastName" name="last_name" class="form-control"
+                       placeholder="Last name" autocomplete="family-name" />
+              </div>
+              <div class="field-error" id="err-lastName"></div>
+            </div>
+          </div>
+
+          <div class="form-group" style="margin-bottom:16px;">
+            <label class="form-label">Email Address</label>
+            <div class="input-icon">
+              <i class="fas fa-envelope"></i>
+              <input type="email" id="email" class="form-control readonly-field"
+                     readonly autocomplete="email" />
+            </div>
+            <div style="font-size:12px;color:var(--gray-500);margin-top:4px;">Email cannot be changed here.</div>
+          </div>
+
+          <div class="form-row" style="margin-bottom:16px;">
+            <div class="form-group">
+              <label class="form-label">Phone Number</label>
+              <div class="input-icon">
+                <i class="fas fa-phone"></i>
+                <input type="tel" id="phone" name="phone" class="form-control"
+                       placeholder="+60 12 345 6789" autocomplete="tel" />
+              </div>
+              <div class="field-error" id="err-phone"></div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">City</label>
+              <div class="input-icon">
+                <i class="fas fa-city"></i>
+                <input type="text" id="city" name="city" class="form-control"
+                       placeholder="Kuala Lumpur" />
+              </div>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Street Address</label>
+              <div class="input-icon">
+                <i class="fas fa-location-dot"></i>
+                <input type="text" id="street" name="street" class="form-control"
+                       placeholder="123 Main Street" autocomplete="street-address" />
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Postal Code</label>
+              <div class="input-icon">
+                <i class="fas fa-mailbox"></i>
+                <input type="text" id="postal" name="postal_code" class="form-control"
+                       placeholder="50000" autocomplete="postal-code" />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="save-bar">
+          <button type="button" class="btn btn-outline" id="reset-btn">Reset</button>
+          <button type="submit" class="btn btn-primary" id="save-btn">
+            <span id="save-text">Save Changes</span>
+            <div class="btn-spin" id="save-spin"></div>
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Change password card -->
+    <div class="card">
+      <div class="section-head">
+        <div class="sicon">🔒</div>
+        <div>
+          <div style="font-size:15px;font-weight:700;">Change Password</div>
+          <div class="card-subtitle">Use a strong password — minimum 8 chars with upper, digit, and symbol</div>
+        </div>
+      </div>
+      <form id="password-form" novalidate>
+        <div class="pform">
+          <div class="form-row" style="margin-bottom:16px;">
+            <div class="form-group">
+              <label class="form-label">Current Password</label>
+              <div class="pw-wrap">
+                <input type="password" id="currentPw" class="form-control"
+                       placeholder="Your current password" autocomplete="current-password" />
+                <button type="button" class="pw-eye" data-target="currentPw">
+                  <i class="fas fa-eye"></i>
+                </button>
+              </div>
+              <div class="field-error" id="err-currentPw"></div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">New Password</label>
+              <div class="pw-wrap">
+                <input type="password" id="newPw" class="form-control"
+                       placeholder="At least 8 characters" autocomplete="new-password" />
+                <button type="button" class="pw-eye" data-target="newPw">
+                  <i class="fas fa-eye"></i>
+                </button>
+              </div>
+              <div class="pw-strength">
+                <div class="pw-strength-bar"><div class="pw-strength-fill" id="pw-fill"></div></div>
+                <div class="pw-strength-text" id="pw-strength-text"></div>
+              </div>
+              <div class="field-error" id="err-newPw"></div>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Confirm New Password</label>
+              <div class="pw-wrap">
+                <input type="password" id="confirmPw" class="form-control"
+                       placeholder="Repeat new password" autocomplete="new-password" />
+                <button type="button" class="pw-eye" data-target="confirmPw">
+                  <i class="fas fa-eye"></i>
+                </button>
+              </div>
+              <div class="field-error" id="err-confirmPw"></div>
+            </div>
+            <div></div>
+          </div>
+        </div>
+
+        <div class="save-bar">
+          <button type="submit" class="btn btn-primary" id="pw-btn">
+            <span id="pw-text"><i class="fas fa-key"></i> Update Password</span>
+            <div class="btn-spin" id="pw-spin"></div>
+          </button>
+        </div>
+      </form>
+    </div>
+
+  </div><!-- /page-body -->
+</div><!-- /main-content -->
+
+<div id="toast-container"></div>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+<script src="js/admin.js"></script>
+<script src="js/admin-profile.js"></script>
+</body>
+</html>

@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Create Account – Laundry Flow Pro</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link rel="stylesheet" href="css/signup.css" />
+</head>
+<body>
+
+  <!-- ───── SPLIT LEFT PANEL ───── -->
+  <div class="auth-left">
+    <div class="al-inner">
+
+      <!-- Brand -->
+      <a href="index.html" class="auth-brand">
+        <div class="brand-icon"><i class="fas fa-tshirt"></i></div>
+        <span>Laundry<span class="brand-accent">Flow</span> Pro</span>
+      </a>
+
+      <!-- Hero copy -->
+      <div class="al-copy">
+        <h1>Fresh clothes,<br /><span class="gradient-text">zero effort</span></h1>
+        <p>Join thousands of customers who've taken laundry off their to-do list. Schedule a pickup and we handle the rest.</p>
+      </div>
+
+      <!-- Feature list -->
+      <ul class="al-feats">
+        <li><span class="feat-icon"><i class="fas fa-truck"></i></span> Free pickup &amp; delivery every time</li>
+        <li><span class="feat-icon"><i class="fas fa-clock"></i></span> 24-hour guaranteed turnaround</li>
+        <li><span class="feat-icon"><i class="fas fa-leaf"></i></span> Eco-friendly detergents only</li>
+        <li><span class="feat-icon"><i class="fas fa-shield-alt"></i></span> Full insurance on every order</li>
+      </ul>
+
+      <!-- Review snippet -->
+      <div class="al-review">
+        <div class="rev-stars">
+          <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+          <i class="fas fa-star"></i><i class="fas fa-star"></i>
+        </div>
+        <p>"Best laundry service I've ever used. My clothes come back perfect every time!"</p>
+        <div class="rev-author">
+          <div class="rev-av">JM</div>
+          <span>Jamie M. — Verified Customer</span>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Background decoration -->
+    <div class="al-blob al-blob-1"></div>
+    <div class="al-blob al-blob-2"></div>
+  </div>
+
+  <!-- ───── SIGN UP FORM PANEL ───── -->
+  <div class="auth-right">
+    <div class="form-card">
+
+      <!-- Header -->
+      <div class="form-head">
+        <h2>Create your account</h2>
+        <p>Start your first pickup — it's free!</p>
+      </div>
+
+      <!-- Progress steps -->
+      <div class="prog-steps">
+        <div class="prog-step active" id="ps-1">
+          <span class="ps-num">1</span><span class="ps-lbl">Personal</span>
+        </div>
+        <div class="prog-line"></div>
+        <div class="prog-step" id="ps-2">
+          <span class="ps-num">2</span><span class="ps-lbl">Contact</span>
+        </div>
+        <div class="prog-line"></div>
+        <div class="prog-step" id="ps-3">
+          <span class="ps-num">3</span><span class="ps-lbl">Security</span>
+        </div>
+      </div>
+
+      <!-- ── STEP 1: Personal ── -->
+      <form id="signup-form" novalidate>
+
+        <div class="form-step" id="step-1">
+          <div class="field-group two-col">
+            <div class="field" id="fg-firstName">
+              <label for="firstName">First Name</label>
+              <div class="input-wrap">
+                <i class="fas fa-user"></i>
+                <input type="text" id="firstName" name="firstName" placeholder="John" autocomplete="given-name" />
+              </div>
+              <span class="field-msg"></span>
+            </div>
+            <div class="field" id="fg-lastName">
+              <label for="lastName">Last Name</label>
+              <div class="input-wrap">
+                <i class="fas fa-user"></i>
+                <input type="text" id="lastName" name="lastName" placeholder="Doe" autocomplete="family-name" />
+              </div>
+              <span class="field-msg"></span>
+            </div>
+          </div>
+
+          <div class="field" id="fg-email">
+            <label for="email">Email Address</label>
+            <div class="input-wrap">
+              <i class="fas fa-envelope"></i>
+              <input type="email" id="email" name="email" placeholder="john@example.com" autocomplete="email" />
+              <span class="input-status"></span>
+            </div>
+            <span class="field-msg"></span>
+          </div>
+
+          <div class="field" id="fg-phone">
+            <label for="phone">Phone Number</label>
+            <div class="input-wrap">
+              <i class="fas fa-phone"></i>
+              <input type="tel" id="phone" name="phone" placeholder="+1 (555) 000-0000" autocomplete="tel" />
+            </div>
+            <span class="field-msg"></span>
+          </div>
+
+          <button type="button" class="btn btn-primary btn-full" id="step1-next">
+            Continue <i class="fas fa-arrow-right"></i>
+          </button>
+        </div>
+
+        <!-- ── STEP 2: Contact / Address ── -->
+        <div class="form-step hidden" id="step-2">
+          <div class="field" id="fg-address">
+            <label for="address">Street Address</label>
+            <div class="input-wrap">
+              <i class="fas fa-map-marker-alt"></i>
+              <input type="text" id="address" name="address" placeholder="123 Main Street" autocomplete="street-address" />
+            </div>
+            <span class="field-msg"></span>
+          </div>
+
+          <div class="field-group two-col">
+            <div class="field" id="fg-city">
+              <label for="city">City</label>
+              <div class="input-wrap">
+                <i class="fas fa-city"></i>
+                <input type="text" id="city" name="city" placeholder="New York" autocomplete="address-level2" />
+              </div>
+              <span class="field-msg"></span>
+            </div>
+            <div class="field" id="fg-zip">
+              <label for="zip">ZIP Code</label>
+              <div class="input-wrap">
+                <i class="fas fa-hashtag"></i>
+                <input type="text" id="zip" name="zip" placeholder="10001" autocomplete="postal-code" />
+              </div>
+              <span class="field-msg"></span>
+            </div>
+          </div>
+
+          <div class="step-nav">
+            <button type="button" class="btn btn-ghost" id="step2-back">
+              <i class="fas fa-arrow-left"></i> Back
+            </button>
+            <button type="button" class="btn btn-primary" id="step2-next">
+              Continue <i class="fas fa-arrow-right"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- ── STEP 3: Security ── -->
+        <div class="form-step hidden" id="step-3">
+          <div class="field" id="fg-password">
+            <label for="password">Password</label>
+            <div class="input-wrap">
+              <i class="fas fa-lock"></i>
+              <input type="password" id="password" name="password" placeholder="Create a strong password" autocomplete="new-password" />
+              <button type="button" class="pw-toggle" data-target="password" aria-label="Toggle password visibility">
+                <i class="fas fa-eye"></i>
+              </button>
+            </div>
+            <!-- Strength bar -->
+            <div class="strength-bar">
+              <div class="strength-track">
+                <div class="strength-fill" id="strength-fill"></div>
+              </div>
+              <span class="strength-label" id="strength-label">Enter a password</span>
+            </div>
+            <div class="strength-hints" id="strength-hints">
+              <span id="hint-len"  class="hint"><i class="fas fa-times"></i> At least 8 characters</span>
+              <span id="hint-upper"class="hint"><i class="fas fa-times"></i> One uppercase letter</span>
+              <span id="hint-num"  class="hint"><i class="fas fa-times"></i> One number</span>
+              <span id="hint-spec" class="hint"><i class="fas fa-times"></i> One special character</span>
+            </div>
+            <span class="field-msg"></span>
+          </div>
+
+          <div class="field" id="fg-confirm">
+            <label for="confirm">Confirm Password</label>
+            <div class="input-wrap">
+              <i class="fas fa-lock"></i>
+              <input type="password" id="confirm" name="confirm" placeholder="Repeat your password" autocomplete="new-password" />
+              <button type="button" class="pw-toggle" data-target="confirm" aria-label="Toggle password visibility">
+                <i class="fas fa-eye"></i>
+              </button>
+            </div>
+            <span class="field-msg"></span>
+          </div>
+
+          <label class="checkbox-wrap">
+            <input type="checkbox" id="terms" name="terms" />
+            <span class="check-box"></span>
+            <span>I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a></span>
+          </label>
+          <span class="field-msg" id="terms-msg"></span>
+
+          <div class="step-nav">
+            <button type="button" class="btn btn-ghost" id="step3-back">
+              <i class="fas fa-arrow-left"></i> Back
+            </button>
+            <button type="submit" class="btn btn-primary" id="submit-btn">
+              <span>Create Account</span>
+              <div class="spinner hidden" id="submit-spinner"></div>
+            </button>
+          </div>
+        </div>
+
+      </form>
+
+      <!-- Success state -->
+      <div class="success-state hidden" id="success-state">
+        <div class="success-icon"><i class="fas fa-check"></i></div>
+        <h3>Account Created!</h3>
+        <p>Welcome to Laundry Flow Pro! Your account is ready. Redirecting to login…</p>
+        <div class="loader-bar"><div class="loader-fill" id="loader-fill"></div></div>
+      </div>
+
+      <!-- Divider & Login link -->
+      <div class="auth-divider"><span>Already have an account?</span></div>
+      <a href="login.html" class="btn btn-outline btn-full">Sign In Instead</a>
+
+    </div><!-- /.form-card -->
+  </div><!-- /.auth-right -->
+
+  <!-- Toast -->
+  <div id="toast-wrap" aria-live="polite"></div>
+
+  <script src="js/config.js"></script>
+  <script src="js/signup.js"></script>
+</body>
+</html>

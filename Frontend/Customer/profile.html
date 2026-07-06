@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My Account — Laundry Flow Pro</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/profile.css" />
+</head>
+<body>
+
+  <!-- ══ NAVBAR ══════════════════════════════════════════════════════════ -->
+  <nav class="navbar scrolled" id="navbar">
+    <div class="container nav-inner">
+      <a href="index.html" class="nav-brand">
+        <div class="brand-icon"><i class="fas fa-tshirt"></i></div>
+        <span>Laundry<span class="brand-accent">Flow</span> Pro</span>
+      </a>
+      <div class="nav-actions" style="margin-left:auto;">
+        <a href="index.html" class="btn btn-ghost">
+          <i class="fas fa-home"></i> Home
+        </a>
+        <button class="btn btn-primary" id="nav-logout-btn">
+          <i class="fas fa-sign-out-alt"></i> Logout
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ══ ACCOUNT LAYOUT ═══════════════════════════════════════════════════ -->
+  <div class="account-wrap">
+
+    <!-- ── Sidebar ──────────────────────────────────────────────────────── -->
+    <aside class="account-sidebar">
+
+      <div class="sb-user">
+        <div class="sb-avatar-wrap">
+          <div class="sb-avatar-circle" id="sb-avatar-circle">
+            <span class="sb-initials" id="sb-initials">?</span>
+            <img class="sb-avatar-img hidden" id="sb-avatar-img" src="" alt="" />
+          </div>
+        </div>
+        <div class="sb-user-info">
+          <div class="sb-name" id="sb-name">Loading…</div>
+          <div class="sb-email" id="sb-email">—</div>
+        </div>
+      </div>
+
+      <nav class="sb-nav">
+        <button class="sb-tab active" data-tab="profile">
+          <i class="fas fa-user"></i>
+          <span>My Profile</span>
+        </button>
+        <button class="sb-tab" data-tab="orders">
+          <i class="fas fa-box-open"></i>
+          <span>Orders</span>
+          <span class="sb-badge hidden" id="active-count">0</span>
+        </button>
+        <button class="sb-tab" data-tab="history">
+          <i class="fas fa-history"></i>
+          <span>Order History</span>
+        </button>
+      </nav>
+
+      <button class="sb-logout-btn" id="sb-logout-btn">
+        <i class="fas fa-sign-out-alt"></i> Logout
+      </button>
+
+    </aside>
+
+    <!-- ── Main Content ──────────────────────────────────────────────────── -->
+    <main class="account-main">
+
+      <!-- ══ TAB: My Profile ══════════════════════════════════════════════ -->
+      <div class="tab-panel active" id="panel-profile">
+
+        <div class="panel-header">
+          <h1 class="panel-title">My Profile</h1>
+          <p class="panel-sub">Manage your account information</p>
+        </div>
+
+        <!-- Avatar Card -->
+        <div class="profile-card avatar-card">
+          <div class="avatar-section">
+            <div class="avatar-wrap" id="avatar-wrap">
+              <div class="avatar-circle" id="avatar-circle">
+                <span class="avatar-initials" id="avatar-initials">?</span>
+                <img class="avatar-img hidden" id="avatar-img" src="" alt="Profile photo" />
+              </div>
+              <label class="avatar-upload-btn" for="avatar-input" title="Change photo">
+                <i class="fas fa-camera"></i>
+              </label>
+              <input type="file" id="avatar-input" accept="image/jpeg,image/png,image/webp"
+                     style="display:none;" />
+            </div>
+            <div class="avatar-info">
+              <h2 class="avatar-name" id="avatar-name">Loading…</h2>
+              <p class="avatar-email" id="avatar-email">—</p>
+              <span class="avatar-badge" id="avatar-badge">Customer</span>
+            </div>
+          </div>
+          <div id="avatar-upload-status" class="avatar-upload-status hidden"></div>
+        </div>
+
+        <!-- Personal Info Card -->
+        <div class="profile-card">
+          <div class="card-section-title">
+            <i class="fas fa-user"></i> Personal Information
+          </div>
+          <form id="profile-form" novalidate>
+            <div class="form-row">
+              <div class="form-group" id="fg-firstName">
+                <label for="firstName">First Name</label>
+                <div class="input-wrap">
+                  <input type="text" id="firstName" name="first_name"
+                         placeholder="First name" autocomplete="given-name" />
+                  <span class="input-status"></span>
+                </div>
+                <span class="field-msg"></span>
+              </div>
+              <div class="form-group" id="fg-lastName">
+                <label for="lastName">Last Name</label>
+                <div class="input-wrap">
+                  <input type="text" id="lastName" name="last_name"
+                         placeholder="Last name" autocomplete="family-name" />
+                  <span class="input-status"></span>
+                </div>
+                <span class="field-msg"></span>
+              </div>
+            </div>
+            <div class="form-group" id="fg-email">
+              <label for="email">Email Address</label>
+              <div class="input-wrap">
+                <input type="email" id="email" name="email"
+                       placeholder="you@example.com" autocomplete="email" readonly />
+                <span class="input-status"></span>
+              </div>
+              <span class="field-msg">Email address cannot be changed here.</span>
+            </div>
+            <div class="form-group" id="fg-phone">
+              <label for="phone">Phone Number</label>
+              <div class="input-wrap">
+                <input type="tel" id="phone" name="phone"
+                       placeholder="+94 77 000 0000" autocomplete="tel" />
+                <span class="input-status"></span>
+              </div>
+              <span class="field-msg"></span>
+            </div>
+            <div class="form-group" id="fg-address">
+              <label for="address">Street Address</label>
+              <div class="input-wrap">
+                <input type="text" id="address" name="street"
+                       placeholder="123 Main Street" autocomplete="street-address" />
+                <span class="input-status"></span>
+              </div>
+              <span class="field-msg"></span>
+            </div>
+            <div class="form-row">
+              <div class="form-group" id="fg-city">
+                <label for="city">City</label>
+                <div class="input-wrap">
+                  <input type="text" id="city" name="city"
+                         placeholder="Colombo" autocomplete="address-level2" />
+                  <span class="input-status"></span>
+                </div>
+                <span class="field-msg"></span>
+              </div>
+              <div class="form-group" id="fg-postal">
+                <label for="postal">Postal Code</label>
+                <div class="input-wrap">
+                  <input type="text" id="postal" name="postal_code"
+                         placeholder="00300" autocomplete="postal-code" />
+                  <span class="input-status"></span>
+                </div>
+                <span class="field-msg"></span>
+              </div>
+            </div>
+            <div class="form-actions">
+              <button type="submit" class="btn btn-primary" id="save-btn">
+                <span id="save-btn-text"><i class="fas fa-save"></i> Save Changes</span>
+                <span class="spinner hidden" id="save-spinner"></span>
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Change Password Card -->
+        <div class="profile-card">
+          <div class="card-section-title">
+            <i class="fas fa-lock"></i> Change Password
+          </div>
+          <form id="password-form" novalidate>
+            <div class="form-group" id="fg-current-pw">
+              <label for="currentPw">Current Password</label>
+              <div class="input-wrap">
+                <input type="password" id="currentPw" name="current_password"
+                       placeholder="Your current password" autocomplete="current-password" />
+                <button type="button" class="pw-toggle" data-target="currentPw" tabindex="-1">
+                  <i class="fas fa-eye"></i>
+                </button>
+              </div>
+              <span class="field-msg"></span>
+            </div>
+            <div class="form-group" id="fg-new-pw">
+              <label for="newPw">New Password</label>
+              <div class="input-wrap">
+                <input type="password" id="newPw" name="new_password"
+                       placeholder="At least 8 characters" autocomplete="new-password" />
+                <button type="button" class="pw-toggle" data-target="newPw" tabindex="-1">
+                  <i class="fas fa-eye"></i>
+                </button>
+              </div>
+              <span class="field-msg"></span>
+            </div>
+            <div class="form-group" id="fg-confirm-pw">
+              <label for="confirmPw">Confirm New Password</label>
+              <div class="input-wrap">
+                <input type="password" id="confirmPw" name="confirm_password"
+                       placeholder="Repeat new password" autocomplete="new-password" />
+                <button type="button" class="pw-toggle" data-target="confirmPw" tabindex="-1">
+                  <i class="fas fa-eye"></i>
+                </button>
+              </div>
+              <span class="field-msg"></span>
+            </div>
+            <div class="form-actions">
+              <button type="submit" class="btn btn-outline" id="pw-save-btn">
+                <span id="pw-save-text"><i class="fas fa-key"></i> Update Password</span>
+                <span class="spinner hidden" id="pw-spinner"></span>
+              </button>
+            </div>
+          </form>
+        </div>
+
+      </div><!-- /panel-profile -->
+
+      <!-- ══ TAB: Orders ═══════════════════════════════════════════════════ -->
+      <div class="tab-panel" id="panel-orders">
+
+        <div class="panel-header">
+          <h1 class="panel-title">Active Orders</h1>
+          <p class="panel-sub">Orders currently being processed</p>
+        </div>
+
+        <div id="orders-container">
+          <div class="orders-loading">
+            <div class="loading-spinner"></div>
+            <p>Loading orders…</p>
+          </div>
+        </div>
+
+      </div><!-- /panel-orders -->
+
+      <!-- ══ TAB: Order History ════════════════════════════════════════════ -->
+      <div class="tab-panel" id="panel-history">
+
+        <div class="panel-header">
+          <h1 class="panel-title">Order History</h1>
+          <p class="panel-sub">Completed and canceled orders</p>
+        </div>
+
+        <div id="history-container">
+          <div class="orders-loading">
+            <div class="loading-spinner"></div>
+            <p>Loading history…</p>
+          </div>
+        </div>
+
+      </div><!-- /panel-history -->
+
+    </main>
+  </div><!-- /account-wrap -->
+
+  <!-- ══ TRACK ORDER MODAL ════════════════════════════════════════════════ -->
+  <div class="track-overlay hidden" id="track-overlay">
+    <div class="track-box">
+      <div class="track-header">
+        <div>
+          <h3 class="track-title">Track Order</h3>
+          <p class="track-order-num" id="track-order-num"></p>
+        </div>
+        <button class="track-close" id="track-close" aria-label="Close">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div class="track-body" id="track-body">
+        <div class="orders-loading"><div class="loading-spinner"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ REVIEW ORDER MODAL ══════════════════════════════════════════════ -->
+  <div class="track-overlay hidden" id="review-overlay">
+    <div class="track-box" style="max-width:480px;">
+      <div class="track-header">
+        <div>
+          <h3 class="track-title">Rate Your Order</h3>
+          <p class="track-order-num" id="review-order-num"></p>
+        </div>
+        <button class="track-close" id="review-close" aria-label="Close">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div class="track-body" style="padding:24px;">
+        <div style="text-align:center;margin-bottom:20px;">
+          <p style="font-size:13px;color:#64748B;margin-bottom:12px;">How was your experience with <strong id="review-service-name"></strong>?</p>
+          <div id="star-picker" style="display:flex;justify-content:center;gap:8px;font-size:36px;cursor:pointer;color:#E2E8F0;">
+            <span data-val="1">★</span>
+            <span data-val="2">★</span>
+            <span data-val="3">★</span>
+            <span data-val="4">★</span>
+            <span data-val="5">★</span>
+          </div>
+          <div id="star-label" style="font-size:12px;color:#94A3B8;margin-top:6px;min-height:18px;"></div>
+        </div>
+        <div style="margin-bottom:14px;">
+          <input id="review-title" type="text" placeholder="Short title (optional)"
+            style="width:100%;padding:10px 14px;border:1.5px solid #E2E8F0;border-radius:8px;font-size:13px;outline:none;font-family:inherit;">
+        </div>
+        <div style="margin-bottom:20px;">
+          <textarea id="review-text" rows="4" placeholder="Tell us about your experience…"
+            style="width:100%;padding:10px 14px;border:1.5px solid #E2E8F0;border-radius:8px;font-size:13px;outline:none;resize:vertical;font-family:inherit;"></textarea>
+        </div>
+        <button id="review-submit-btn"
+          style="width:100%;padding:12px;background:#2563EB;color:#fff;border:none;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;">
+          Submit Review
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast-wrap"></div>
+
+  <script src="js/config.js"></script>
+  <script src="js/notif-bell.js"></script>
+  <script src="js/profile.js"></script>
+</body>
+</html>

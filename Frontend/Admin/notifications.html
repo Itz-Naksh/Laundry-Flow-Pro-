@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Notifications — Laundry Flow Pro Admin</title>
+  <link rel="stylesheet" href="css/admin.css" />
+</head>
+<body>
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-logo"><div class="logo-icon">🧺</div><div><div class="logo-text">Laundry <span>Flow</span> Pro</div><span class="badge">Admin Panel</span></div></div>
+  <nav class="sidebar-nav">
+    <div class="nav-section-label">Main</div>
+    <a href="dashboard.html" class="nav-item"><span class="nav-icon">📊</span> Dashboard</a>
+    <a href="orders.html" class="nav-item"><span class="nav-icon">📦</span> Orders<span class="nav-badge" id="nav-pending-badge"></span></a>
+    <a href="users.html" class="nav-item"><span class="nav-icon">👥</span> Customers</a>
+    <div class="nav-section-label">Manage</div>
+    <a href="services.html" class="nav-item"><span class="nav-icon">🧼</span> Services</a>
+    <a href="promos.html" class="nav-item"><span class="nav-icon">🎟️</span> Promo Codes</a>
+    <a href="reviews.html" class="nav-item"><span class="nav-icon">⭐</span> Reviews</a>
+    <div class="nav-section-label">Reports</div>
+    <a href="analytics.html" class="nav-item"><span class="nav-icon">📈</span> Analytics</a>
+    <a href="notifications.html" class="nav-item active"><span class="nav-icon">🔔</span> Notifications<span class="nav-badge green" id="nav-notif-badge"></span></a>
+  </nav>
+  <div class="sidebar-footer"><div class="admin-profile"><div class="admin-avatar">SA</div><div class="admin-info"><div class="name">Super Admin</div><div class="role">Administrator</div></div></div></div>
+</aside>
+
+<div class="main-content">
+  <header class="topbar">
+    <button class="sidebar-toggle" id="sidebarToggle">☰</button>
+    <div class="topbar-left">
+      <div class="page-title">Notifications</div>
+      <div class="page-subtitle">System alerts, broadcasts &amp; promotional campaigns</div>
+    </div>
+    <div class="topbar-actions">
+      <button class="btn btn-outline btn-sm" onclick="markAllRead()">✓ Mark All Read</button>
+      <button class="btn btn-outline btn-sm" onclick="openModal('promoModal')">📢 Campaign</button>
+      <button class="btn btn-primary btn-sm" onclick="openModal('sendNotifModal')">✉ Custom Notification</button>
+    </div>
+  </header>
+
+  <div class="page-body">
+    <div class="grid-6040">
+
+      <!-- ── Left: Notification Feed ────────────────────────────────────── -->
+      <div>
+        <!-- Stats Row -->
+        <div class="d-flex gap-12 mb-20" style="flex-wrap:wrap;">
+          <div class="card" style="flex:1;min-width:120px;">
+            <div class="card-body" style="padding:14px;text-align:center;">
+              <div style="font-size:22px;font-weight:800;color:var(--primary);" id="stat-total">—</div>
+              <div style="font-size:12px;color:var(--gray-500);margin-top:2px;">Total</div>
+            </div>
+          </div>
+          <div class="card" style="flex:1;min-width:120px;">
+            <div class="card-body" style="padding:14px;text-align:center;">
+              <div style="font-size:22px;font-weight:800;color:var(--warning);" id="stat-unread">—</div>
+              <div style="font-size:12px;color:var(--gray-500);margin-top:2px;">Unread</div>
+            </div>
+          </div>
+          <div class="card" style="flex:1;min-width:120px;">
+            <div class="card-body" style="padding:14px;text-align:center;">
+              <div style="font-size:22px;font-weight:800;color:var(--green);" id="stat-orders">—</div>
+              <div style="font-size:12px;color:var(--gray-500);margin-top:2px;">New Orders</div>
+            </div>
+          </div>
+          <div class="card" style="flex:1;min-width:120px;">
+            <div class="card-body" style="padding:14px;text-align:center;">
+              <div style="font-size:22px;font-weight:800;color:var(--blue-light, #60a5fa);" id="stat-customers">—</div>
+              <div style="font-size:12px;color:var(--gray-500);margin-top:2px;">New Customers</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Filters -->
+        <div class="filter-chips mb-20" id="notifFilters">
+          <div class="filter-chip active" data-nf="all">All</div>
+          <div class="filter-chip" data-nf="unread">Unread</div>
+          <div class="filter-chip" data-nf="order">New Orders</div>
+          <div class="filter-chip" data-nf="customer">New Customers</div>
+          <div class="filter-chip" data-nf="review">Reviews</div>
+          <div class="filter-chip" data-nf="system">System</div>
+        </div>
+
+        <!-- Feed -->
+        <div id="notif-feed">
+          <div style="text-align:center;padding:32px;color:var(--gray-400);">Loading…</div>
+        </div>
+      </div>
+
+      <!-- ── Right: Quick Actions ──────────────────────────────────────── -->
+      <div style="display:flex;flex-direction:column;gap:20px;">
+
+        <!-- Broadcast Templates -->
+        <div class="card">
+          <div class="card-header"><div class="card-title">📋 Quick Templates</div></div>
+          <div class="card-body" style="display:flex;flex-direction:column;gap:10px;">
+            <button class="btn btn-outline w-full" style="justify-content:flex-start;gap:10px;font-size:13px;" onclick="useTemplate('promo')">🎟️ Promotional Offer</button>
+            <button class="btn btn-outline w-full" style="justify-content:flex-start;gap:10px;font-size:13px;" onclick="useTemplate('maintenance')">🔧 Scheduled Maintenance</button>
+            <button class="btn btn-outline w-full" style="justify-content:flex-start;gap:10px;font-size:13px;" onclick="useTemplate('reminder')">⏰ Order Reminder</button>
+            <button class="btn btn-outline w-full" style="justify-content:flex-start;gap:10px;font-size:13px;" onclick="useTemplate('new_service')">✨ New Service Announcement</button>
+            <button class="btn btn-outline w-full" style="justify-content:flex-start;gap:10px;font-size:13px;" onclick="useTemplate('holiday')">🎉 Holiday Special</button>
+          </div>
+        </div>
+
+        <!-- Notification Stats -->
+        <div class="card">
+          <div class="card-header"><div class="card-title">📊 Inbox Stats</div></div>
+          <div class="card-body"><div id="notif-stats"></div></div>
+        </div>
+
+        <!-- Today's Activity -->
+        <div class="card">
+          <div class="card-header"><div class="card-title">📅 Today's Activity</div></div>
+          <div class="card-body">
+            <div id="today-activity" style="display:flex;flex-direction:column;gap:10px;">
+              <div style="font-size:13px;color:var(--gray-400);">Loading…</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ MODAL: Custom Notification ══════════════════════════════════════════ -->
+<div class="modal-overlay" id="sendNotifModal">
+  <div class="modal" style="max-width:540px;">
+    <div class="modal-header">
+      <div class="modal-title">✉ Send Custom Notification</div>
+      <button class="modal-close" onclick="closeModal('sendNotifModal')">✕</button>
+    </div>
+    <div class="modal-body" style="display:flex;flex-direction:column;gap:14px;">
+      <div class="form-group">
+        <label class="form-label">Notification Type</label>
+        <select class="form-control" id="notif-type">
+          <option value="custom">Custom</option>
+          <option value="announcement">Announcement</option>
+          <option value="system">System</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Recipients</label>
+        <select class="form-control" id="notif-recipients">
+          <option value="all">All Customers</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Subject</label>
+        <input class="form-control" id="notif-subject" placeholder="Notification subject…" />
+      </div>
+      <div class="form-group">
+        <label class="form-label">Message</label>
+        <textarea class="form-control" id="notif-body" rows="4" placeholder="Write your message…" style="resize:vertical;"></textarea>
+      </div>
+      <div class="d-flex gap-16">
+        <label style="display:flex;align-items:center;gap:8px;font-size:13px;cursor:pointer;">
+          <input type="checkbox" id="notif-send-inapp" checked /> Website Notification
+        </label>
+        <label style="display:flex;align-items:center;gap:8px;font-size:13px;cursor:pointer;">
+          <input type="checkbox" id="notif-send-email" /> Email (SMTP)
+        </label>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('sendNotifModal')">Cancel</button>
+      <button class="btn btn-primary" onclick="sendNotification()">Send Now</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ MODAL: Promotional Campaign ═════════════════════════════════════════ -->
+<div class="modal-overlay" id="promoModal">
+  <div class="modal" style="max-width:580px;">
+    <div class="modal-header">
+      <div class="modal-title">📢 Send Promotional Campaign</div>
+      <button class="modal-close" onclick="closeModal('promoModal')">✕</button>
+    </div>
+    <div class="modal-body" style="display:flex;flex-direction:column;gap:14px;">
+      <div class="form-group">
+        <label class="form-label">Campaign Title <span style="color:var(--red);">*</span></label>
+        <input class="form-control" id="promo-title" placeholder="e.g. Summer Sale 2026" />
+      </div>
+      <div class="form-group">
+        <label class="form-label">Email Subject <span style="color:var(--red);">*</span></label>
+        <input class="form-control" id="promo-subject" placeholder="e.g. 🎉 Summer Sale — 30% Off All Services!" />
+      </div>
+      <div class="form-group">
+        <label class="form-label">Message <span style="color:var(--red);">*</span></label>
+        <textarea class="form-control" id="promo-message" rows="5" placeholder="Write your promotional message…" style="resize:vertical;"></textarea>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+        <div class="form-group" style="margin:0;">
+          <label class="form-label">Promo Code (optional)</label>
+          <input class="form-control" id="promo-code" placeholder="e.g. SUMMER30" style="text-transform:uppercase;letter-spacing:2px;font-weight:700;" />
+        </div>
+        <div class="form-group" style="margin:0;">
+          <label class="form-label">Recipients</label>
+          <select class="form-control" id="promo-recipients">
+            <option value="all">All Customers</option>
+          </select>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+        <div class="form-group" style="margin:0;">
+          <label class="form-label">Start Date (optional)</label>
+          <input class="form-control" type="date" id="promo-start" />
+        </div>
+        <div class="form-group" style="margin:0;">
+          <label class="form-label">End Date (optional)</label>
+          <input class="form-control" type="date" id="promo-end" />
+        </div>
+      </div>
+      <div class="d-flex gap-20">
+        <label style="display:flex;align-items:center;gap:8px;font-size:13px;cursor:pointer;">
+          <input type="checkbox" id="promo-send-inapp" checked /> Website Notification
+        </label>
+        <label style="display:flex;align-items:center;gap:8px;font-size:13px;cursor:pointer;">
+          <input type="checkbox" id="promo-send-email" checked /> Email via SMTP
+        </label>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('promoModal')">Cancel</button>
+      <button class="btn btn-primary" onclick="sendPromotion()">🚀 Send Campaign</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast-container"></div>
+<script src="js/admin.js"></script>
+<script src="js/notifications.js"></script>
+</body>
+</html>

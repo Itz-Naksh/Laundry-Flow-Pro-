@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Services — Laundry Flow Pro Admin</title>
+  <link rel="stylesheet" href="css/admin.css" />
+</head>
+<body>
+
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-logo">
+    <div class="logo-icon">🧺</div>
+    <div><div class="logo-text">Laundry <span>Flow</span> Pro</div><span class="badge">Admin Panel</span></div>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="nav-section-label">Main</div>
+    <a href="dashboard.html" class="nav-item"><span class="nav-icon">📊</span> Dashboard</a>
+    <a href="orders.html" class="nav-item"><span class="nav-icon">📦</span> Orders<span class="nav-badge" id="nav-pending-badge"></span></a>
+    <a href="users.html" class="nav-item"><span class="nav-icon">👥</span> Customers</a>
+    <div class="nav-section-label">Manage</div>
+    <a href="services.html" class="nav-item active"><span class="nav-icon">🧼</span> Services</a>
+    <a href="promos.html" class="nav-item"><span class="nav-icon">🎟️</span> Promo Codes</a>
+    <a href="reviews.html" class="nav-item"><span class="nav-icon">⭐</span> Reviews</a>
+    <div class="nav-section-label">Reports</div>
+    <a href="analytics.html" class="nav-item"><span class="nav-icon">📈</span> Analytics</a>
+    <a href="notifications.html" class="nav-item"><span class="nav-icon">🔔</span> Notifications<span class="nav-badge green" id="nav-notif-badge"></span></a>
+  </nav>
+  <div class="sidebar-footer">
+    <div class="admin-profile">
+      <div class="admin-avatar">SA</div>
+      <div class="admin-info"><div class="name">Super Admin</div><div class="role">Administrator</div></div>
+    </div>
+  </div>
+</aside>
+
+<div class="main-content">
+  <header class="topbar">
+    <button class="sidebar-toggle" id="sidebarToggle">☰</button>
+    <div class="topbar-left">
+      <div class="page-title">Services</div>
+      <div class="page-subtitle">Manage laundry service types and pricing</div>
+    </div>
+    <div class="topbar-actions">
+      <button class="btn btn-primary btn-sm" onclick="openModal('addServiceModal')">+ Add Service</button>
+    </div>
+  </header>
+
+  <div class="page-body">
+    <!-- Service Cards Grid -->
+    <div class="grid-3 mb-20" id="service-cards"></div>
+
+    <!-- Service Performance Table -->
+    <div class="card">
+      <div class="card-header">
+        <div>
+          <div class="card-title">Service Performance</div>
+          <div class="card-subtitle">Revenue and usage statistics</div>
+        </div>
+      </div>
+      <div class="card-body" style="padding-top:12px;">
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Service</th>
+                <th>Unit</th>
+                <th>Base Price</th>
+                <th>Turnaround</th>
+                <th>Orders</th>
+                <th>Revenue</th>
+                <th>Avg Rating</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="service-table-body"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ADD / EDIT SERVICE MODAL -->
+<div class="modal-overlay" id="addServiceModal">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title" id="svc-modal-title">Add Service</div>
+      <button class="modal-close" onclick="closeModal('addServiceModal')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group"><label class="form-label">Service Name</label><input class="form-control" id="svc-name" placeholder="e.g. Wash &amp; Fold" /></div>
+      <div class="form-group"><label class="form-label">Description</label><textarea class="form-control" id="svc-desc" rows="2" placeholder="Short description…" style="resize:vertical;"></textarea></div>
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">Base Price ($)</label><input class="form-control" id="svc-price" type="number" step="0.01" placeholder="1.49" /></div>
+        <div class="form-group"><label class="form-label">Unit</label>
+          <select class="form-control" id="svc-unit"><option>lb</option><option>item</option><option>bag</option></select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">Turnaround (hours)</label><input class="form-control" id="svc-turnaround" type="number" placeholder="24" /></div>
+        <div class="form-group"><label class="form-label">Express?</label>
+          <select class="form-control" id="svc-express"><option value="0">No</option><option value="1">Yes</option></select>
+        </div>
+      </div>
+      <div class="form-group"><label class="form-label">Icon (emoji)</label><input class="form-control" id="svc-icon" placeholder="🧺" /></div>
+      <div class="form-group"><label class="form-label">Status</label>
+        <select class="form-control" id="svc-status"><option value="active">Active</option><option value="inactive">Inactive</option></select>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('addServiceModal')">Cancel</button>
+      <button class="btn btn-primary" onclick="saveService()">Save Service</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast-container"></div>
+<script src="js/admin.js"></script>
+<script src="js/services.js"></script>
+</body>
+</html>

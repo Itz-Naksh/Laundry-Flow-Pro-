@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Checkout — Laundry Flow Pro</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/booking.css" />
+</head>
+<body>
+
+  <!-- ═══════════════════════════ NAVBAR ═══════════════════════════ -->
+  <nav class="navbar scrolled" id="navbar">
+    <div class="container nav-inner">
+      <a href="index.html" class="nav-brand">
+        <div class="brand-icon"><i class="fas fa-tshirt"></i></div>
+        <span>Laundry<span class="brand-accent">Flow</span> Pro</span>
+      </a>
+      <div class="nav-actions" style="margin-left:auto;">
+        <div id="nav-auth" style="display:none;align-items:center;gap:0.75rem;">
+          <a href="profile.html" class="btn btn-ghost" style="display:flex;align-items:center;gap:0.4rem;">
+            <i class="fas fa-user-circle" style="font-size:1.15rem;"></i>
+            <span id="nav-user-greeting">Profile</span>
+          </a>
+          <button class="btn btn-primary" id="nav-logout-btn">
+            <i class="fas fa-sign-out-alt"></i> Logout
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ═══════════════════════ PROGRESS BAR ═════════════════════════ -->
+  <div class="progress-bar">
+    <div class="progress-steps">
+      <div class="step done">
+        <div class="step-num">1</div>
+        <span class="step-label">Service</span>
+      </div>
+      <div class="step done">
+        <div class="step-num">2</div>
+        <span class="step-label">Schedule</span>
+      </div>
+      <div class="step active">
+        <div class="step-num">3</div>
+        <span class="step-label">Checkout</span>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <span class="step-label">Done</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════ CONTENT ══════════════════════════ -->
+  <main class="booking-page" id="checkout-main" style="padding-top:0">
+    <div class="booking-container">
+
+      <!-- ── Checkout View ──────────────────────────────────────── -->
+      <div id="checkout-view">
+
+        <h1 class="booking-title">Review &amp; Pay</h1>
+        <p class="booking-sub">Confirm your order details before placing.</p>
+
+        <!-- Order Summary -->
+        <div class="bk-card">
+          <div class="bk-card-title"><i class="fas fa-receipt"></i> Order Summary</div>
+
+          <div class="locked-service" id="co-service" style="margin-bottom:20px;">
+            <div class="ls-icon" id="co-svc-icon">🧺</div>
+            <div class="ls-info">
+              <div class="ls-name" id="co-svc-name">—</div>
+              <div class="ls-meta" id="co-svc-meta">—</div>
+            </div>
+          </div>
+
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:4px;">
+            <div>
+              <div style="font-size:.78rem;font-weight:600;color:var(--clr-muted);margin-bottom:4px;">PICKUP</div>
+              <div style="font-size:.88rem;color:var(--clr-dark);font-weight:600;" id="co-pickup-date">—</div>
+              <div style="font-size:.82rem;color:var(--clr-muted);" id="co-pickup-addr">—</div>
+            </div>
+            <div>
+              <div style="font-size:.78rem;font-weight:600;color:var(--clr-muted);margin-bottom:4px;">DELIVERY</div>
+              <div style="font-size:.88rem;color:var(--clr-dark);font-weight:600;" id="co-delivery-date">—</div>
+              <div style="font-size:.82rem;color:var(--clr-muted);" id="co-delivery-addr">—</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Promo Code -->
+        <div class="bk-card">
+          <div class="bk-card-title"><i class="fas fa-tag"></i> Promo Code</div>
+          <div class="promo-row">
+            <div class="form-group">
+              <label for="promo_code">Enter Promo Code</label>
+              <input type="text" id="promo_code" class="form-control"
+                     placeholder="e.g. WELCOME10" style="text-transform:uppercase" />
+            </div>
+            <button type="button" class="btn-apply" id="btn-apply-promo">Apply</button>
+          </div>
+          <div class="promo-msg" id="promo-msg"></div>
+        </div>
+
+        <!-- Pricing Breakdown -->
+        <div class="bk-card">
+          <div class="bk-card-title"><i class="fas fa-calculator"></i> Pricing Breakdown</div>
+          <div class="price-summary">
+            <div class="price-row">
+              <span id="co-qty-label">Subtotal</span>
+              <span id="co-subtotal">$0.00</span>
+            </div>
+            <div class="price-row" id="discount-row" style="display:none">
+              <span>Discount (<span id="co-promo-code-label">—</span>)</span>
+              <span class="discount-val" id="co-discount">-$0.00</span>
+            </div>
+            <div class="price-row">
+              <span>Tax (8%)</span>
+              <span id="co-tax">$0.00</span>
+            </div>
+            <div class="price-row total">
+              <span>Total Amount</span>
+              <span id="co-total">$0.00</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Payment Method -->
+        <div class="bk-card">
+          <div class="bk-card-title"><i class="fas fa-credit-card"></i> Payment Method</div>
+
+          <div class="payment-options">
+            <label class="pay-option" id="opt-card" onclick="selectPayment('card')">
+              <input type="radio" name="payment_method" value="card" />
+              <div class="pay-icon"><i class="fas fa-credit-card"></i></div>
+              <div>
+                <div class="pay-label">Card Payment</div>
+                <div class="pay-desc">Visa, Mastercard, AMEX</div>
+              </div>
+            </label>
+            <label class="pay-option selected" id="opt-cod" onclick="selectPayment('cod')">
+              <input type="radio" name="payment_method" value="cod" checked />
+              <div class="pay-icon"><i class="fas fa-money-bill-wave"></i></div>
+              <div>
+                <div class="pay-label">Cash on Delivery</div>
+                <div class="pay-desc">Pay when delivered</div>
+              </div>
+            </label>
+          </div>
+
+          <!-- Card fields (hidden unless card selected) -->
+          <div class="card-fields" id="card-fields">
+            <div class="form-row">
+              <div class="form-group">
+                <label for="card_holder">Card Holder Name<span class="req">*</span></label>
+                <input type="text" id="card_holder" class="form-control"
+                       placeholder="Name as on card" autocomplete="cc-name" />
+              </div>
+              <div class="form-group">
+                <label for="card_number">Card Number<span class="req">*</span></label>
+                <div class="card-number-wrap">
+                  <input type="text" id="card_number" class="form-control"
+                         placeholder="•••• •••• •••• ••••" maxlength="19"
+                         autocomplete="cc-number" inputmode="numeric" />
+                  <i class="fas fa-credit-card card-icon"></i>
+                </div>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="expiry">Expiry Date<span class="req">*</span></label>
+                <input type="text" id="expiry" class="form-control"
+                       placeholder="MM / YY" maxlength="7"
+                       autocomplete="cc-exp" inputmode="numeric" />
+              </div>
+              <div class="form-group">
+                <label for="cvv">CVV<span class="req">*</span></label>
+                <input type="text" id="cvv" class="form-control"
+                       placeholder="•••" maxlength="4"
+                       autocomplete="cc-csc" inputmode="numeric" />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Actions -->
+        <div class="bk-actions">
+          <button type="button" class="btn-back" onclick="window.location.href='schedule-pickup.html'">
+            <i class="fas fa-arrow-left"></i> Back to Schedule
+          </button>
+          <button type="button" class="btn-continue" id="btn-place-order">
+            <i class="fas fa-check-circle"></i> Place Order
+          </button>
+        </div>
+      </div>
+
+      <!-- ── Confirmation View (shown after order placed) ──────── -->
+      <div id="confirm-view" style="display:none">
+        <div class="confirm-box">
+          <div class="confirm-icon"><i class="fas fa-check"></i></div>
+          <h2 class="confirm-title">Order Placed!</h2>
+          <p class="confirm-sub">Your pickup has been scheduled. We'll be in touch soon.</p>
+          <div class="confirm-number" id="confirm-order-number">LFP-2026XXXX</div>
+          <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
+            <a href="index.html" class="btn btn-outline" style="border-radius:50px;">
+              <i class="fas fa-home"></i> Back to Home
+            </a>
+            <a href="services.html" class="btn btn-primary" style="border-radius:50px;">
+              <i class="fas fa-plus"></i> Book Another
+            </a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <div id="toast-wrap"></div>
+
+  <script src="js/config.js"></script>
+  <script src="js/notif-bell.js"></script>
+  <script src="js/checkout.js"></script>
+</body>
+</html>

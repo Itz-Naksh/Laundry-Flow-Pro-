@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Promo Codes — Laundry Flow Pro Admin</title>
+  <link rel="stylesheet" href="css/admin.css" />
+</head>
+<body>
+
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-logo">
+    <div class="logo-icon">🧺</div>
+    <div><div class="logo-text">Laundry<span>Flow</span> Pro</div><span class="badge">Admin Panel</span></div>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="nav-section-label">Main</div>
+    <a href="dashboard.html" class="nav-item"><span class="nav-icon">📊</span> Dashboard</a>
+    <a href="orders.html" class="nav-item"><span class="nav-icon">📦</span> Orders<span class="nav-badge" id="nav-pending-badge"></span></a>
+    <a href="users.html" class="nav-item"><span class="nav-icon">👥</span> Customers</a>
+    <div class="nav-section-label">Manage</div>
+    <a href="services.html" class="nav-item"><span class="nav-icon">🧼</span> Services</a>
+    <a href="promos.html" class="nav-item active"><span class="nav-icon">🎟️</span> Promo Codes</a>
+    <a href="reviews.html" class="nav-item"><span class="nav-icon">⭐</span> Reviews</a>
+    <div class="nav-section-label">Reports</div>
+    <a href="analytics.html" class="nav-item"><span class="nav-icon">📈</span> Analytics</a>
+    <a href="notifications.html" class="nav-item"><span class="nav-icon">🔔</span> Notifications<span class="nav-badge green" id="nav-notif-badge"></span></a>
+  </nav>
+  <div class="sidebar-footer">
+    <div class="admin-profile">
+      <div class="admin-avatar">SA</div>
+      <div class="admin-info"><div class="name">Super Admin</div><div class="role">Administrator</div></div>
+    </div>
+  </div>
+</aside>
+
+<div class="main-content">
+  <header class="topbar">
+    <button class="sidebar-toggle" id="sidebarToggle">☰</button>
+    <div class="topbar-left">
+      <div class="page-title">Promo Codes</div>
+      <div class="page-subtitle">Create and manage promotional discount codes</div>
+    </div>
+    <div class="topbar-actions">
+      <button class="btn btn-primary btn-sm" onclick="openAddPromo()">+ New Promo</button>
+    </div>
+  </header>
+
+  <div class="page-body">
+    <!-- Stats -->
+    <div class="stats-grid mb-20" style="grid-template-columns:repeat(4,1fr);">
+      <div class="stat-card blue"><div class="stat-top"><div class="stat-icon">🎟️</div></div><div class="stat-value">14</div><div class="stat-label">Active Promos</div></div>
+      <div class="stat-card green"><div class="stat-top"><div class="stat-icon">✅</div></div><div class="stat-value">847</div><div class="stat-label">Total Uses</div></div>
+      <div class="stat-card orange"><div class="stat-top"><div class="stat-icon">💰</div></div><div class="stat-value">LKR 2,341</div><div class="stat-label">Discounts Given</div></div>
+      <div class="stat-card purple"><div class="stat-top"><div class="stat-icon">📅</div></div><div class="stat-value">3</div><div class="stat-label">Expiring Soon</div></div>
+    </div>
+
+    <div class="toolbar">
+      <div class="search-bar">
+        <span class="search-icon">🔍</span>
+        <input type="text" placeholder="Search promo codes…" id="promoSearch" />
+      </div>
+      <div class="filter-chips" id="promoFilters">
+        <div class="filter-chip active" data-pf="all">All</div>
+        <div class="filter-chip" data-pf="active">Active</div>
+        <div class="filter-chip" data-pf="inactive">Inactive</div>
+        <div class="filter-chip" data-pf="expired">Expired</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Code</th>
+              <th>Type</th>
+              <th>Value</th>
+              <th>Min Order</th>
+              <th>Uses</th>
+              <th>Max Uses</th>
+              <th>Valid Until</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="promos-body"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ADD/EDIT PROMO MODAL -->
+<div class="modal-overlay" id="addPromoModal">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title" id="promo-modal-title">New Promo Code</div>
+      <button class="modal-close" onclick="closeModal('addPromoModal')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group"><label class="form-label">Code</label>
+        <div style="display:flex;gap:8px;">
+          <input class="form-control" id="p-code" placeholder="SUMMER20" style="text-transform:uppercase;flex:1;" />
+          <button class="btn btn-outline btn-sm" onclick="generateCode()">Generate</button>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">Discount Type</label>
+          <select class="form-control" id="p-type">
+            <option value="percent">Percentage (%)</option>
+            <option value="fixed">Fixed Amount ($)</option>
+          </select>
+        </div>
+        <div class="form-group"><label class="form-label">Discount Value</label>
+          <input class="form-control" id="p-value" type="number" step="0.01" placeholder="20" />
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">Min Order ($)</label>
+          <input class="form-control" id="p-min" type="number" step="0.01" placeholder="15.00" />
+        </div>
+        <div class="form-group"><label class="form-label">Max Uses</label>
+          <input class="form-control" id="p-max-uses" type="number" placeholder="100" />
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">Valid From</label>
+          <input class="form-control" id="p-from" type="date" />
+        </div>
+        <div class="form-group"><label class="form-label">Valid Until</label>
+          <input class="form-control" id="p-until" type="date" />
+        </div>
+      </div>
+      <div class="form-group"><label class="form-label">Status</label>
+        <select class="form-control" id="p-status"><option value="1">Active</option><option value="0">Inactive</option></select>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('addPromoModal')">Cancel</button>
+      <button class="btn btn-primary" onclick="savePromo()">Save Code</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast-container"></div>
+<script src="js/admin.js"></script>
+<script src="js/promos.js"></script>
+</body>
+</html>
