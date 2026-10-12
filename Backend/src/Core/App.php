@@ -183,7 +183,7 @@ class App
             'lifetime' => 0,
             'path'     => '/',
             'domain'   => '',
-            'secure'   => false,
+            'secure'   => self::isHttps(),
             'httponly' => true,
             'samesite' => 'Lax',
         ]);
@@ -193,7 +193,7 @@ class App
     private function setResponseHeaders(): void
     {
         $origin = $_SERVER['HTTP_ORIGIN'] ?? '';
-        if ($origin) {
+        if ($origin && $this->isAllowedOrigin($origin)) {
             header('Access-Control-Allow-Origin: ' . $origin);
             header('Access-Control-Allow-Credentials: true');
             header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS');
@@ -203,5 +203,23 @@ class App
         header('X-Content-Type-Options: nosniff');
         header('X-Frame-Options: SAMEORIGIN');
         header('Referrer-Policy: strict-origin-when-cross-origin');
+    }
+
+    /**
+     * Only this site's own origin, plus any listed in CORS_ALLOWED_ORIGINS
+     * (comma-separated in .env), may make credentialed cross-origin calls.
+     */
+    private function isAllowedOrigin(string $origin): bool
+    {
+        $self = (self::isHttps() ? 'https' : 'http') . '://' . ($_SERVER['HTTP_HOST'] ?? '');
+        if (strcasecmp($origin, $self) === 0) return true;
+
+        $allowed = array_filter(array_map('trim', explode(',', (string) Env::get('CORS_ALLOWED_ORIGINS', ''))));
+        return in_array($origin, $allowed, true);
+    }
+
+    private static function isHttps(): bool
+    {
+        return !empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off';
     }
 }

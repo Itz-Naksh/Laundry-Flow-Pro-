@@ -274,12 +274,6 @@ async function sendPromotion() {
 }
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
-function escHtml(str) {
-  const d = document.createElement('div');
-  d.textContent = str || '';
-  return d.innerHTML;
-}
-
 function setText(id, val) {
   const el = document.getElementById(id);
   if (el) el.textContent = val;

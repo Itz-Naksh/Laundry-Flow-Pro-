@@ -53,7 +53,7 @@ function renderPromos(list) {
         : '<span class="badge badge-suspended">Inactive</span>';
     return `
       <tr>
-        <td><code style="font-size:13px;font-weight:700;color:var(--primary);background:var(--primary-light);padding:3px 8px;border-radius:6px;">${p.code}</code></td>
+        <td><code style="font-size:13px;font-weight:700;color:var(--primary);background:var(--primary-light);padding:3px 8px;border-radius:6px;">${escHtml(p.code)}</code></td>
         <td class="text-sm">${p.discount_type === 'percent' ? 'Percentage' : 'Fixed Amount'}</td>
         <td class="fw-700 text-sm" style="color:var(--green);">${p.discount_type === 'percent' ? p.discount_value + '%' : 'LKR ' + p.discount_value}</td>
         <td class="text-sm">${p.min_order_value > 0 ? 'LKR ' + p.min_order_value : '—'}</td>
@@ -66,9 +66,9 @@ function renderPromos(list) {
         <td>${statusBadgeHtml}</td>
         <td>
           <div class="d-flex ai-center gap-8">
-            <button class="btn btn-outline btn-sm btn-icon" onclick="copyCode('${p.code}')" title="Copy">📋</button>
+            <button class="btn btn-outline btn-sm btn-icon" onclick="copyCode(${jsArg(p.code)})" title="Copy">📋</button>
             <button class="btn btn-outline btn-sm btn-icon" onclick="editPromo(${p.id})" title="Edit">✏️</button>
-            <button class="btn btn-outline btn-sm btn-icon" onclick="deletePromo(${p.id}, '${p.code}')" title="Delete" style="color:var(--red);">🗑</button>
+            <button class="btn btn-outline btn-sm btn-icon" onclick="deletePromo(${p.id}, ${jsArg(p.code)})" title="Delete" style="color:var(--red);">🗑</button>
           </div>
         </td>
       </tr>

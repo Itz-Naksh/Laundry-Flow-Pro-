@@ -31,13 +31,13 @@ async function loadServices() {
 
       return `
         <div class="svc-booking-card">
-          <div class="svc-emoji">${s.icon || '🧺'}</div>
+          <div class="svc-emoji">${escHtml(s.icon || '🧺')}</div>
           <h3>${escHtml(s.name)}</h3>
           <p>${escHtml(s.description || '')}</p>
           ${ratingHtml}
           <div class="svc-meta-row">
             <span class="svc-price">LKR ${s.base_price.toFixed(2)}</span>
-            <span class="svc-unit">${unitLabel[s.unit] || s.unit}</span>
+            <span class="svc-unit">${escHtml(unitLabel[s.unit] || s.unit)}</span>
             ${s.is_express ? '<span class="express-badge">⚡ Express</span>' : ''}
             <span class="svc-turnaround"><i class="fas fa-clock"></i> ${s.turnaround_h}h</span>
           </div>
@@ -48,7 +48,7 @@ async function loadServices() {
     }).join('');
   } catch (e) {
     grid.innerHTML = `<div class="state-msg" style="grid-column:1/-1">
-      <i class="fas fa-exclamation-circle"></i>${e.message || 'Failed to load services.'}</div>`;
+      <i class="fas fa-exclamation-circle"></i>${escHtml(e.message || 'Failed to load services.')}</div>`;
   }
 }
 
@@ -106,17 +106,13 @@ document.addEventListener('DOMContentLoaded', () => {
   loadServices();
 });
 
-function escHtml(s) {
-  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-}
-
 function showToast(message, type = 'info', duration = 4000) {
   const wrap = document.getElementById('toast-wrap');
   if (!wrap) return;
   const icons = { success:'fa-circle-check', error:'fa-circle-xmark', warning:'fa-triangle-exclamation', info:'fa-circle-info' };
   const el = document.createElement('div');
   el.className = `toast ${type}`;
-  el.innerHTML = `<i class="fas ${icons[type]||icons.info} toast-icon"></i><span>${message}</span>
+  el.innerHTML = `<i class="fas ${icons[type]||icons.info} toast-icon"></i><span>${escHtml(message)}</span>
     <button class="toast-close" aria-label="Close"><i class="fas fa-times"></i></button>`;
   el.querySelector('.toast-close').addEventListener('click', () => dismiss(el));
   wrap.appendChild(el);

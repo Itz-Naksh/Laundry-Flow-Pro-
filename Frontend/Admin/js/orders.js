@@ -62,7 +62,7 @@ async function loadServiceOptions() {
     if (!sel) return;
     const services = Array.isArray(j.data) ? j.data : [];
     sel.innerHTML = '<option value="">All Services</option>' +
-      services.map(s => `<option value="${s.id}">${s.name}</option>`).join('');
+      services.map(s => `<option value="${escHtml(s.id)}">${escHtml(s.name)}</option>`).join('');
   } catch (err) {
     console.error('[orders] loadServiceOptions error:', err);
   }
@@ -107,17 +107,17 @@ function renderOrderTable(orders) {
   body.innerHTML = orders.map((o, i) => `
     <tr>
       <td style="color:var(--gray-400);font-size:12px;text-align:center;">${(ordPage - 1) * ORD_PER + i + 1}</td>
-      <td><span class="fw-600" style="color:var(--primary);font-size:12px;">${o.order_number}</span></td>
+      <td><span class="fw-600" style="color:var(--primary);font-size:12px;">${escHtml(o.order_number)}</span></td>
       <td>
         <div class="d-flex ai-center gap-8">
           <div class="avatar">${initials(o.customer_name)}</div>
           <div>
-            <div style="font-size:13px;font-weight:600;">${o.customer_name}</div>
-            <div class="text-muted text-sm">${o.customer_email}</div>
+            <div style="font-size:13px;font-weight:600;">${escHtml(o.customer_name)}</div>
+            <div class="text-muted text-sm">${escHtml(o.customer_email)}</div>
           </div>
         </div>
       </td>
-      <td style="font-size:13px;">${o.service_name}</td>
+      <td style="font-size:13px;">${escHtml(o.service_name)}</td>
       <td style="font-size:13px;">${o.weight_lbs ? o.weight_lbs + ' lbs' : '—'}</td>
       <td class="fw-600" style="font-size:13px;">${formatCurrency(o.total_amount)}</td>
       <td>${statusBadge(o.status)}</td>
@@ -130,7 +130,7 @@ function renderOrderTable(orders) {
             <div class="dropdown-menu">
               <div class="dropdown-item" onclick="viewOrder(${o.order_id})">👁 View Details</div>
               <div class="dropdown-item" onclick="viewOrder(${o.order_id})">🔄 Update Status</div>
-              <div class="dropdown-item danger" onclick="deleteOrder(${o.order_id}, '${o.order_number}')">✕ Delete Order</div>
+              <div class="dropdown-item danger" onclick="deleteOrder(${o.order_id}, ${jsArg(o.order_number)})">✕ Delete Order</div>
             </div>
           </div>
         </div>
@@ -193,8 +193,8 @@ async function viewOrder(id) {
         const doneIdx = timeline.reduce((acc, t, i) => t.status ? i : acc, -1);
         tl.innerHTML = timeline.map((t, i) => `
           <div class="timeline-item ${t.status ? 'done' : ''} ${i === doneIdx ? 'current' : ''}">
-            <div class="timeline-label">${STATUS_LABELS[t.status] || t.status?.replace(/_/g,' ') || 'Event'}</div>
-            ${t.note ? `<div class="text-muted text-sm">${t.note}</div>` : ''}
+            <div class="timeline-label">${escHtml(STATUS_LABELS[t.status] || t.status?.replace(/_/g,' ') || 'Event')}</div>
+            ${t.note ? `<div class="text-muted text-sm">${escHtml(t.note)}</div>` : ''}
             <div class="timeline-time">${t.created_at ? formatDate(t.created_at) : '—'}</div>
           </div>
         `).join('');
@@ -210,7 +210,7 @@ async function viewOrder(id) {
 
     if (sel) {
       if (isLocked) {
-        sel.innerHTML = `<option value="${o.status}">${STATUS_LABELS[o.status] || o.status}</option>`;
+        sel.innerHTML = `<option value="${escHtml(o.status)}">${escHtml(STATUS_LABELS[o.status] || o.status)}</option>`;
         sel.disabled  = true;
       } else {
         const nextStatuses = VALID_TRANSITIONS[o.status] || [];

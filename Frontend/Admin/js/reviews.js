@@ -131,7 +131,7 @@ function renderReviewsTable(list) {
       pending:  `<span class="badge-pending">Pending</span>`,
       approved: `<span class="badge-approved">Approved</span>`,
       rejected: `<span class="badge-rejected">Rejected</span>`,
-    }[r.status] || `<span class="badge-pending">${r.status}</span>`;
+    }[r.status] || `<span class="badge-pending">${escHtml(r.status)}</span>`;
 
     const featuredBadge = r.is_featured
       ? `<span class="badge-featured">★ Featured</span>`
@@ -155,15 +155,15 @@ function renderReviewsTable(list) {
         <td>
           <div class="d-flex ai-center gap-8">
             <div class="avatar" style="width:30px;height:30px;font-size:11px;flex-shrink:0;">${initials(r.customer_name)}</div>
-            <span style="font-size:12px;font-weight:600;">${r.customer_name}</span>
+            <span style="font-size:12px;font-weight:600;">${escHtml(r.customer_name)}</span>
           </div>
         </td>
-        <td class="text-sm text-muted">${r.service_name}</td>
-        <td style="font-size:11px;font-weight:600;color:var(--primary);">${r.order_number}</td>
+        <td class="text-sm text-muted">${escHtml(r.service_name)}</td>
+        <td style="font-size:11px;font-weight:600;color:var(--primary);">${escHtml(r.order_number)}</td>
         <td>${starsHtml(r.rating)}</td>
         <td>
-          ${r.title ? `<div style="font-size:12px;font-weight:600;margin-bottom:2px;">${r.title}</div>` : ''}
-          <div class="review-snippet" title="${(r.review_text || '').replace(/"/g,'&quot;')}">${r.review_text || '—'}</div>
+          ${r.title ? `<div style="font-size:12px;font-weight:600;margin-bottom:2px;">${escHtml(r.title)}</div>` : ''}
+          <div class="review-snippet" title="${escHtml(r.review_text || '')}">${escHtml(r.review_text || '—')}</div>
           <div style="font-size:10px;color:var(--gray-400);margin-top:2px;">${formatDate(r.created_at)}</div>
         </td>
         <td>${statusBadge}</td>

@@ -31,13 +31,19 @@ function clearSession() {
   localStorage.removeItem('lfp_remember_email');
 }
 
+/* ── Escape a value for safe use inside HTML ───────────────────────── */
+function escHtml(s) {
+  return String(s ?? '').replace(/[&<>"']/g, c =>
+    ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[c]));
+}
+
 /* ── Toast ───────────────────────────────────────────────────────── */
 function showToast(msg, type = 'info', duration = 4000) {
   const wrap  = document.getElementById('toast-wrap');
   const icons = { success:'fa-circle-check', error:'fa-circle-xmark', warning:'fa-triangle-exclamation', info:'fa-circle-info' };
   const t = document.createElement('div');
   t.className = `toast ${type}`;
-  t.innerHTML = `<i class="fas ${icons[type] || icons.info}"></i><span>${msg}</span><button class="toast-close"><i class="fas fa-times"></i></button>`;
+  t.innerHTML = `<i class="fas ${icons[type] || icons.info}"></i><span>${escHtml(msg)}</span><button class="toast-close"><i class="fas fa-times"></i></button>`;
   t.querySelector('.toast-close').addEventListener('click', () => dismiss(t));
   wrap?.appendChild(t);
   const timer = setTimeout(() => dismiss(t), duration);

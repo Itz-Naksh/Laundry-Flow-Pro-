@@ -57,7 +57,7 @@ function renderHero(user) {
   if (sbName) sbName.textContent = user.full_name || 'Admin';
   if (sbAv) {
     if (user.avatar_url) {
-      sbAv.innerHTML = `<img src="${user.avatar_url}" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">`;
+      sbAv.innerHTML = `<img src="${escHtml(user.avatar_url)}" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">`;
     } else {
       sbAv.textContent = initials;
     }
@@ -194,7 +194,7 @@ $('avatar-input')?.addEventListener('change', async e => {
       img.onload = () => { img.classList.add('loaded'); $('hero-initials').style.display = 'none'; };
       /* Update sidebar */
       const sbAv = $('sb-avatar');
-      if (sbAv) sbAv.innerHTML = `<img src="${url}" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">`;
+      if (sbAv) sbAv.innerHTML = `<img src="${escHtml(url)}" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">`;
       /* Update session */
       const stored = getStoredUser();
       if (stored) {

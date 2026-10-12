@@ -139,12 +139,12 @@ function renderLineChart(values, labels) {
 
       ${allPts.map((p, i) => p.y !== null ? `
         <circle cx="${p.x}" cy="${p.y}" r="4" fill="#2563EB" stroke="white" stroke-width="2">
-          <title>${lbls[i] || ''}: ${formatCurrency(p.v)}</title>
+          <title>${escHtml(lbls[i] || '')}: ${formatCurrency(p.v)}</title>
         </circle>
       ` : '').join('')}
 
       ${lbls.map((l, i) => `
-        <text x="${xOf(i)}" y="${H - 4}" text-anchor="middle" font-size="9" fill="var(--gray-400)">${l}</text>
+        <text x="${xOf(i)}" y="${H - 4}" text-anchor="middle" font-size="9" fill="var(--gray-400)">${escHtml(l)}</text>
       `).join('')}
     </svg>`;
 }
@@ -185,7 +185,7 @@ function renderDonut(statusData) {
     legend.innerHTML = data.map(d => `
       <div class="donut-item">
         <div class="donut-dot" style="background:${d.color}"></div>
-        <span class="donut-item-label">${d.label}</span>
+        <span class="donut-item-label">${escHtml(d.label)}</span>
         <span class="donut-item-val">${d.value}</span>
       </div>
     `).join('');
@@ -207,7 +207,7 @@ function renderTopServices(services) {
   el.innerHTML = services.map(s => `
     <div style="margin-bottom:14px;">
       <div class="d-flex ai-center gap-8 mb-4">
-        <span style="font-size:13px;font-weight:600;color:var(--gray-800);flex:1;">${s.name}</span>
+        <span style="font-size:13px;font-weight:600;color:var(--gray-800);flex:1;">${escHtml(s.name)}</span>
         <span style="font-size:12px;color:var(--gray-500);">${s.count} orders</span>
       </div>
       <div class="progress-bar">
@@ -226,14 +226,14 @@ function renderRecentOrders(orders) {
   }
   body.innerHTML = orders.map(o => `
     <tr>
-      <td><span class="fw-600 text-sm" style="color:var(--primary)">${o.id}</span></td>
+      <td><span class="fw-600 text-sm" style="color:var(--primary)">${escHtml(o.id)}</span></td>
       <td>
         <div class="d-flex ai-center gap-8">
           <div class="avatar">${initials(o.customer)}</div>
-          <span>${o.customer}</span>
+          <span>${escHtml(o.customer)}</span>
         </div>
       </td>
-      <td>${o.service}</td>
+      <td>${escHtml(o.service)}</td>
       <td>${statusBadge(o.status)}</td>
       <td class="fw-600">${formatCurrency(o.total)}</td>
     </tr>
@@ -248,8 +248,8 @@ function renderNewCustomers(customers) {
     <div class="d-flex ai-center gap-12" style="padding:10px 0;border-bottom:1px solid var(--gray-100);">
       <div class="avatar">${initials(c.name)}</div>
       <div style="flex:1;min-width:0;">
-        <div class="fw-600" style="font-size:13px;">${c.name}</div>
-        <div class="text-muted text-sm">${c.email}</div>
+        <div class="fw-600" style="font-size:13px;">${escHtml(c.name)}</div>
+        <div class="text-muted text-sm">${escHtml(c.email)}</div>
       </div>
       <span class="text-muted text-sm">${formatDate(c.joined)}</span>
     </div>
@@ -264,10 +264,10 @@ function renderReviews(reviews) {
     <div style="padding:12px 0;border-bottom:1px solid var(--gray-100);">
       <div class="d-flex ai-center gap-8 mb-4">
         <div class="avatar">${initials(r.name)}</div>
-        <span class="fw-600" style="font-size:13px;">${r.name}</span>
+        <span class="fw-600" style="font-size:13px;">${escHtml(r.name)}</span>
         <span style="color:#F59E0B;margin-left:auto;font-size:13px;">${'★'.repeat(r.rating)}${'☆'.repeat(5 - r.rating)}</span>
       </div>
-      <p style="font-size:12px;color:var(--gray-500);line-height:1.5;">${r.text}</p>
+      <p style="font-size:12px;color:var(--gray-500);line-height:1.5;">${escHtml(r.text)}</p>
     </div>
   `).join('');
 }

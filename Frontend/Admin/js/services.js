@@ -40,14 +40,14 @@ function renderServiceCards() {
       <div style="position:absolute;top:0;left:0;right:0;height:4px;background:${svcColors[i % svcColors.length]};"></div>
       <div class="card-body">
         <div class="d-flex ai-center gap-12" style="margin-bottom:12px;">
-          <div style="width:44px;height:44px;border-radius:12px;background:var(--gray-100);display:flex;align-items:center;justify-content:center;font-size:22px;">${s.icon || '🧺'}</div>
+          <div style="width:44px;height:44px;border-radius:12px;background:var(--gray-100);display:flex;align-items:center;justify-content:center;font-size:22px;">${escHtml(s.icon || '🧺')}</div>
           <div style="flex:1;">
-            <div class="fw-700" style="font-size:14px;">${s.name}</div>
-            <div class="text-muted text-sm">${formatCurrency(s.base_price)}/${s.unit || 'lb'}${s.is_express ? ' · ⚡ Express' : ''}</div>
+            <div class="fw-700" style="font-size:14px;">${escHtml(s.name)}</div>
+            <div class="text-muted text-sm">${formatCurrency(s.base_price)}/${escHtml(s.unit || 'lb')}${s.is_express ? ' · ⚡ Express' : ''}</div>
           </div>
           <span class="badge ${s.is_active ? 'badge-active' : 'badge-canceled'}">${s.is_active ? 'active' : 'inactive'}</span>
         </div>
-        <p style="font-size:12px;color:var(--gray-500);line-height:1.5;margin-bottom:16px;">${s.description || ''}</p>
+        <p style="font-size:12px;color:var(--gray-500);line-height:1.5;margin-bottom:16px;">${escHtml(s.description || '')}</p>
         <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:16px;text-align:center;">
           <div style="background:var(--gray-50);border-radius:8px;padding:8px 4px;">
             <div class="fw-700" style="font-size:16px;">${s.order_count ?? 0}</div>
@@ -64,7 +64,7 @@ function renderServiceCards() {
         </div>
         <div class="d-flex ai-center gap-8">
           <button class="btn btn-outline btn-sm" style="flex:1;" onclick="editService(${s.id})">✏️ Edit</button>
-          <button class="btn btn-outline btn-sm btn-icon" onclick="deleteService(${s.id}, '${s.name.replace(/'/g,"\\'")}')">🗑</button>
+          <button class="btn btn-outline btn-sm btn-icon" onclick="deleteService(${s.id}, ${jsArg(s.name)})">🗑</button>
         </div>
       </div>
     </div>
@@ -82,14 +82,14 @@ function renderServiceTable() {
     <tr>
       <td>
         <div class="d-flex ai-center gap-8">
-          <span style="font-size:20px;">${s.icon || '🧺'}</span>
+          <span style="font-size:20px;">${escHtml(s.icon || '🧺')}</span>
           <div>
-            <div class="fw-600" style="font-size:13px;">${s.name}</div>
-            <div class="text-muted text-sm">${(s.description || '').substring(0, 50)}${s.description?.length > 50 ? '…' : ''}</div>
+            <div class="fw-600" style="font-size:13px;">${escHtml(s.name)}</div>
+            <div class="text-muted text-sm">${escHtml((s.description || '').substring(0, 50))}${s.description?.length > 50 ? '…' : ''}</div>
           </div>
         </div>
       </td>
-      <td class="text-sm">per ${s.unit || 'lb'}</td>
+      <td class="text-sm">per ${escHtml(s.unit || 'lb')}</td>
       <td class="fw-600 text-sm">${formatCurrency(s.base_price)}</td>
       <td class="text-sm">${s.turnaround_h ?? '—'}h${s.is_express ? ' ⚡' : ''}</td>
       <td class="fw-600 text-sm">${s.order_count ?? 0}</td>
@@ -102,7 +102,7 @@ function renderServiceTable() {
       <td>
         <div class="d-flex ai-center gap-8">
           <button class="btn btn-outline btn-sm btn-icon" onclick="editService(${s.id})" title="Edit">✏️</button>
-          <button class="btn btn-outline btn-sm btn-icon" onclick="deleteService(${s.id}, '${s.name.replace(/'/g,"\\'")}')">🗑</button>
+          <button class="btn btn-outline btn-sm btn-icon" onclick="deleteService(${s.id}, ${jsArg(s.name)})">🗑</button>
         </div>
       </td>
     </tr>

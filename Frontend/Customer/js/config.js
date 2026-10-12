@@ -34,6 +34,12 @@ const API_BASE = (function () {
    stores are display/UX caches only.
 ─────────────────────────────────────────────────────────────────── */
 
+/* ─── Escape a value for safe use inside HTML text or attributes ── */
+function escHtml(s) {
+  return String(s ?? '').replace(/[&<>"']/g, c =>
+    ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[c]));
+}
+
 function getStoredUser() {
   try {
     const raw = sessionStorage.getItem('lfp_user') ?? localStorage.getItem('lfp_user');

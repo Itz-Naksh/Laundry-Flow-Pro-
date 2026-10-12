@@ -40,7 +40,7 @@ class AdminOrderController
         $db = Database::connect();
 
         $page      = max(1, (int) ($req->query('page') ?? 1));
-        $perPage   = (int) ($req->query('per_page') ?? self::PER_PAGE);
+        $perPage   = min(100, max(1, (int) ($req->query('per_page') ?? self::PER_PAGE)));
         $search    = trim((string) ($req->query('search') ?? ''));
         $status    = trim((string) ($req->query('status') ?? ''));
         $svcId     = (int) ($req->query('service_id') ?? 0);

@@ -59,7 +59,7 @@ function getCsrfToken() {
   if (avatarEl) {
     if (user.avatar_url) {
       avatarEl.style.background = 'none';
-      avatarEl.innerHTML = `<img src="${user.avatar_url}" alt="" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">`;
+      avatarEl.innerHTML = `<img src="${escHtml(user.avatar_url)}" alt="" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">`;
     } else {
       avatarEl.textContent = (user.full_name || 'SA')
         .split(' ').map(w => w[0] || '').join('').toUpperCase().slice(0, 2);
@@ -173,7 +173,7 @@ function showToast(msg, type = 'default', duration = 3000) {
   const icons = { success: '✅', error: '❌', warning: '⚠️', default: 'ℹ️' };
   const t = document.createElement('div');
   t.className = `toast ${type}`;
-  t.innerHTML = `<span>${icons[type] || icons.default}</span><span>${msg}</span>`;
+  t.innerHTML = `<span>${icons[type] || icons.default}</span><span>${escHtml(msg)}</span>`;
   c.appendChild(t);
   setTimeout(() => t.remove(), duration);
 }
@@ -236,7 +236,19 @@ function timeAgo(iso) {
   return `${Math.floor(hrs / 24)}d ago`;
 }
 function initials(name) {
-  return name.split(' ').map(w => w[0]).join('').toUpperCase().slice(0, 2);
+  // Letters/digits only, so the result is always safe to put in HTML
+  return String(name ?? '').split(' ').map(w => (w.match(/[\p{L}\p{N}]/u) || [''])[0]).join('').toUpperCase().slice(0, 2);
+}
+
+// Escape a value for safe use inside HTML text or attributes
+function escHtml(s) {
+  return String(s ?? '').replace(/[&<>"']/g, c =>
+    ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[c]));
+}
+
+// Encode a value as a JS string literal for an inline onclick="..." argument
+function jsArg(s) {
+  return escHtml(JSON.stringify(String(s ?? '')));
 }
 
 // Status badge HTML
@@ -249,7 +261,7 @@ function statusBadge(status) {
     admin: 'Admin', customer: 'Customer', driver: 'Driver',
   };
   const key = (status || '').toLowerCase().replace(/\s+/g, '_');
-  return `<span class="badge badge-${key}">${labels[key] || status}</span>`;
+  return `<span class="badge badge-${escHtml(key)}">${escHtml(labels[key] || status)}</span>`;
 }
 
 // Animate counter

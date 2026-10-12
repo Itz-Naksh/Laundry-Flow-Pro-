@@ -42,7 +42,7 @@ function renderBarChart(containerId, labelId, data, labels, color) {
     const h     = Math.max(4, Math.round((v / max) * 100));
     const title = `${labels[i]}: ${v >= 1000 ? '' + formatCurrency(v) : v}`;
     return `<div style="flex:1;display:flex;flex-direction:column;align-items:center;height:100%;">
-      <div style="margin-top:auto;width:100%;background:${color};border-radius:4px 4px 0 0;height:${h}%;min-height:4px;transition:height .5s ease;" title="${title}"></div>
+      <div style="margin-top:auto;width:100%;background:${color};border-radius:4px 4px 0 0;height:${h}%;min-height:4px;transition:height .5s ease;" title="${escHtml(title)}"></div>
     </div>`;
   }).join('');
 
@@ -77,7 +77,7 @@ function renderServiceRevenueChart(list) {
     <div style="margin-bottom:14px;">
       <div class="d-flex ai-center gap-8 mb-4">
         <div style="width:10px;height:10px;border-radius:3px;background:${s.color};flex-shrink:0;"></div>
-        <span style="font-size:13px;font-weight:600;flex:1;">${s.name}</span>
+        <span style="font-size:13px;font-weight:600;flex:1;">${escHtml(s.name)}</span>
         <span style="font-size:12px;color:var(--gray-500);">${s.pct}%</span>
         <span class="fw-700" style="font-size:13px;color:var(--green);">${formatCurrency(s.revenue)}</span>
       </div>
@@ -121,7 +121,7 @@ function renderTopCustomers(list) {
       <td>
         <div class="d-flex ai-center gap-8">
           <div class="avatar">${initials(c.name)}</div>
-          <span class="fw-600" style="font-size:13px;">${c.name}</span>
+          <span class="fw-600" style="font-size:13px;">${escHtml(c.name)}</span>
         </div>
       </td>
       <td class="fw-600 text-sm">${c.orders}</td>

@@ -1,0 +1,10 @@
+# Secrets — never commit. Copy Backend/.env.example to Backend/.env instead.
+Backend/.env
+
+# Runtime data
+Backend/logs/*.log
+Backend/storage/
+
+# User-uploaded files
+Backend/uploads/avatars/*
+!Backend/uploads/avatars/.gitkeep

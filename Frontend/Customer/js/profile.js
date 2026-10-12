@@ -25,7 +25,7 @@ function showToast(msg, type = 'info', duration = 4000) {
   const icons = { success:'fa-circle-check', error:'fa-circle-xmark', warning:'fa-triangle-exclamation', info:'fa-circle-info' };
   const t = document.createElement('div');
   t.className = `toast ${type}`;
-  t.innerHTML = `<i class="fas ${icons[type]} toast-icon"></i><span>${msg}</span>
+  t.innerHTML = `<i class="fas ${icons[type]} toast-icon"></i><span>${escHtml(msg)}</span>
     <button class="toast-close"><i class="fas fa-times"></i></button>`;
   t.querySelector('.toast-close').addEventListener('click', () => dismiss(t));
   wrap?.appendChild(t);
@@ -326,10 +326,10 @@ function renderOrderCard(o, showTrack = true) {
       <i class="fas fa-star" style="color:#F59E0B;"></i> Your feedback is requested — rate this order!
     </div>` : ''}
     <div class="order-card-head">
-      <div class="order-svc-icon">${o.service_icon || '🧺'}</div>
+      <div class="order-svc-icon">${escHtml(o.service_icon || '🧺')}</div>
       <div class="order-card-meta">
-        <div class="order-number">${o.order_number}</div>
-        <div class="order-svc-name">${o.service_name}</div>
+        <div class="order-number">${escHtml(o.order_number)}</div>
+        <div class="order-svc-name">${escHtml(o.service_name)}</div>
       </div>
       <span class="order-status-badge ${statusCls}">${statusLabel(o.status)}</span>
     </div>
@@ -344,7 +344,7 @@ function renderOrderCard(o, showTrack = true) {
       </div>
       <div class="order-detail-item">
         <span class="order-detail-label">Payment</span>
-        <span class="order-detail-value">${o.payment_method === 'card' ? 'Card' : o.payment_method === 'cod' ? 'Cash on Delivery' : o.payment_method}</span>
+        <span class="order-detail-value">${o.payment_method === 'card' ? 'Card' : o.payment_method === 'cod' ? 'Cash on Delivery' : escHtml(o.payment_method)}</span>
       </div>
       <div class="order-detail-item">
         <span class="order-detail-label">Placed On</span>
@@ -354,7 +354,7 @@ function renderOrderCard(o, showTrack = true) {
     <div class="order-card-foot">
       <div class="order-total">Total: <span>LKR ${parseFloat(o.total_amount).toFixed(2)}</span></div>
       <div class="order-card-actions">
-        ${showTrack ? `<button class="btn-track" data-order-id="${o.order_id}" data-order-num="${o.order_number}">
+        ${showTrack ? `<button class="btn-track" data-order-id="${o.order_id}" data-order-num="${escHtml(o.order_number)}">
           <i class="fas fa-map-marker-alt"></i> Track Order
         </button>` : ''}
         ${!showTrack ? `<button class="btn-rebook">
@@ -414,7 +414,7 @@ async function loadActiveOrders() {
     container.innerHTML = `<div class="orders-empty">
       <i class="fas fa-exclamation-circle"></i>
       <h3>Could not load orders</h3>
-      <p>${e.message || 'Please try again later.'}</p>
+      <p>${escHtml(e.message || 'Please try again later.')}</p>
     </div>`;
   }
 }
@@ -446,7 +446,7 @@ async function loadOrderHistory() {
     container.innerHTML = `<div class="orders-empty">
       <i class="fas fa-exclamation-circle"></i>
       <h3>Could not load history</h3>
-      <p>${e.message || 'Please try again later.'}</p>
+      <p>${escHtml(e.message || 'Please try again later.')}</p>
     </div>`;
   }
 }
@@ -501,7 +501,7 @@ async function openTrackModal(orderId, orderNumber) {
           <div class="track-step-info">
             <div class="track-step-label">${step.label}</div>
             ${hist ? `<div class="track-step-time">${fmtDateTime(hist.created_at)}</div>` : ''}
-            ${hist?.note ? `<div class="track-step-note">${hist.note}</div>` : ''}
+            ${hist?.note ? `<div class="track-step-note">${escHtml(hist.note)}</div>` : ''}
           </div>
         </div>`;
     });
@@ -514,7 +514,7 @@ async function openTrackModal(orderId, orderNumber) {
           <div class="track-step-info">
             <div class="track-step-label">Canceled</div>
             ${cancelHist ? `<div class="track-step-time">${fmtDateTime(cancelHist.created_at)}</div>` : ''}
-            ${cancelHist?.note ? `<div class="track-step-note">${cancelHist.note}</div>` : ''}
+            ${cancelHist?.note ? `<div class="track-step-note">${escHtml(cancelHist.note)}</div>` : ''}
           </div>
         </div>`;
     }
@@ -524,11 +524,11 @@ async function openTrackModal(orderId, orderNumber) {
       <div class="track-info-grid">
         <div class="track-info-item">
           <span class="track-info-label">Pickup Address</span>
-          <span class="track-info-value">${order.pickup_address || '—'}</span>
+          <span class="track-info-value">${escHtml(order.pickup_address || '—')}</span>
         </div>
         <div class="track-info-item">
           <span class="track-info-label">Delivery Address</span>
-          <span class="track-info-value">${order.delivery_address || '—'}</span>
+          <span class="track-info-value">${escHtml(order.delivery_address || '—')}</span>
         </div>
         <div class="track-info-item">
           <span class="track-info-label">Pickup Date</span>
@@ -548,7 +548,7 @@ async function openTrackModal(orderId, orderNumber) {
         </div>
       </div>`;
   } catch (e) {
-    body.innerHTML = `<div class="orders-empty"><i class="fas fa-exclamation-circle"></i><p>${e.message || 'Could not load tracking info.'}</p></div>`;
+    body.innerHTML = `<div class="orders-empty"><i class="fas fa-exclamation-circle"></i><p>${escHtml(e.message || 'Could not load tracking info.')}</p></div>`;
   }
 }
 

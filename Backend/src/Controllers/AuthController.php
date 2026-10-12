@@ -5,7 +5,7 @@ namespace App\Controllers;
 
 use App\Core\{Request, Response, Middleware, Database};
 use App\Models\{User, AuthSession};
-use App\Helpers\Validator;
+use App\Helpers\{Validator, LoginThrottle};
 use App\Services\NotificationService;
 
 class AuthController
@@ -96,13 +96,25 @@ class AuthController
             Response::error('Email and password are required.', 400);
         }
 
+        // ── Brute-force protection ────────────────────────────────────────────
+        $throttle   = new LoginThrottle();
+        $retryAfter = $throttle->retryAfter($email, $req->ip());
+        if ($retryAfter > 0) {
+            header('Retry-After: ' . $retryAfter);
+            Response::error('Too many failed login attempts. Please try again in '
+                            . (int) ceil($retryAfter / 60) . ' minute(s).', 429);
+        }
+
         $userModel = new User();
         $user      = $userModel->findByEmail($email);
 
         // Intentionally vague — don't reveal which part is wrong
         if (!$user || !$userModel->verifyPassword($password, (string) $user['password'])) {
+            $throttle->recordFailure($email, $req->ip());
             Response::error('Invalid email or password.', 401);
         }
+
+        $throttle->clear($email, $req->ip());
 
         if ($user['status'] === 'suspended') {
             Response::error('Your account has been suspended. Please contact support.', 403);
@@ -204,7 +216,8 @@ class AuthController
                 )->execute([(int) $user['id'], hash('sha256', $plain), $expiresAt]);
 
                 // TODO: send email with: "…/reset-password?token={$plain}"
-                error_log("[LFP] Password reset for {$email} — token: {$plain}");
+                // Never log the token itself — anyone reading the log could reset the password.
+                error_log("[LFP] Password reset requested for user #{$user['id']}");
             }
         }
 

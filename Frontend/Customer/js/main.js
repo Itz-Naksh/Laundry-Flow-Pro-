@@ -243,12 +243,12 @@ async function loadFeaturedReviews() {
       return `
         <div class="testi-card">
           <div class="testi-stars">${buildStarIcons(r.rating)}</div>
-          <p>"${r.review_text || ''}"</p>
+          <p>"${escHtml(r.review_text || '')}"</p>
           <div class="testi-author">
-            <div class="author-av" style="background:${gradient}">${av.toUpperCase()}</div>
+            <div class="author-av" style="background:${gradient}">${escHtml(av.toUpperCase())}</div>
             <div>
-              <strong>${r.customer_name}</strong>
-              <span>${r.service_name ? r.service_name + ' · ' : ''}${date}</span>
+              <strong>${escHtml(r.customer_name)}</strong>
+              <span>${r.service_name ? escHtml(r.service_name) + ' · ' : ''}${date}</span>
             </div>
           </div>
         </div>`;
@@ -344,7 +344,7 @@ window.showToast = function(message, type = 'info', duration = 4000) {
   toast.className = `toast ${type}`;
   toast.innerHTML = `
     <i class="fas ${icons[type] || icons.info} toast-icon"></i>
-    <span>${message}</span>
+    <span>${escHtml(message)}</span>
     <button class="toast-close" aria-label="Close"><i class="fas fa-times"></i></button>
   `;
 

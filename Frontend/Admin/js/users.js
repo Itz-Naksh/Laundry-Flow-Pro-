@@ -73,12 +73,12 @@ function renderCustomerTable(customers) {
         <div class="d-flex ai-center gap-8">
           <div class="avatar">${initials(u.full_name)}</div>
           <div>
-            <div class="fw-600" style="font-size:13px;">${u.full_name}</div>
-            <div class="text-muted text-sm">${u.email}</div>
+            <div class="fw-600" style="font-size:13px;">${escHtml(u.full_name)}</div>
+            <div class="text-muted text-sm">${escHtml(u.email)}</div>
           </div>
         </div>
       </td>
-      <td class="text-sm">${u.phone || '—'}</td>
+      <td class="text-sm">${escHtml(u.phone || '—')}</td>
       <td>${statusBadge(u.role || 'customer')}</td>
       <td>${statusBadge(u.status)}</td>
       <td class="fw-600 text-sm">${u.orders_count ?? 0}</td>
@@ -90,7 +90,7 @@ function renderCustomerTable(customers) {
             <button class="btn btn-outline btn-sm btn-icon" data-dropdown>⋯</button>
             <div class="dropdown-menu">
               <div class="dropdown-item" onclick="viewUser(${u.id})">👁 View Profile</div>
-              <div class="dropdown-item danger" onclick="toggleSuspend(${u.id}, '${u.status}', '${u.full_name.replace(/'/g,"\\'")}')">
+              <div class="dropdown-item danger" onclick="toggleSuspend(${u.id}, ${jsArg(u.status)}, ${jsArg(u.full_name)})">
                 ${u.status === 'suspended' ? '✅ Activate' : '🚫 Suspend'}
               </div>
             </div>
@@ -138,9 +138,9 @@ async function viewUser(id) {
     document.getElementById('vu-email').textContent = u.email;
     document.getElementById('vu-status-badge').innerHTML = statusBadge(u.status);
     document.getElementById('vu-details').innerHTML = `
-      <div><span style="color:var(--gray-500);">Phone:</span> ${u.phone || '—'}</div>
-      <div><span style="color:var(--gray-500);">Address:</span> ${u.address || '—'}</div>
-      <div><span style="color:var(--gray-500);">Role:</span> ${u.role || 'customer'}</div>
+      <div><span style="color:var(--gray-500);">Phone:</span> ${escHtml(u.phone || '—')}</div>
+      <div><span style="color:var(--gray-500);">Address:</span> ${escHtml(u.address || '—')}</div>
+      <div><span style="color:var(--gray-500);">Role:</span> ${escHtml(u.role || 'customer')}</div>
       <div><span style="color:var(--gray-500);">Joined:</span> ${formatDate(u.created_at)}</div>
       <div><span style="color:var(--gray-500);">Total Orders:</span> <strong>${u.order_count ?? 0}</strong></div>
       <div><span style="color:var(--gray-500);">Total Spent:</span> <strong>${formatCurrency(u.total_spent ?? 0)}</strong></div>
@@ -148,8 +148,8 @@ async function viewUser(id) {
     document.getElementById('vu-orders').innerHTML = recentOrders.length
       ? recentOrders.map(o => `
         <div class="d-flex ai-center gap-8" style="padding:8px 0;border-bottom:1px solid var(--gray-100);">
-          <span class="fw-600" style="color:var(--primary);font-size:12px;flex:1;">${o.order_number}</span>
-          <span class="text-sm">${o.service_name}</span>
+          <span class="fw-600" style="color:var(--primary);font-size:12px;flex:1;">${escHtml(o.order_number)}</span>
+          <span class="text-sm">${escHtml(o.service_name)}</span>
           ${statusBadge(o.status)}
           <span class="fw-600 text-sm">${formatCurrency(o.total_amount)}</span>
         </div>

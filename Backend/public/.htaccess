@@ -1,3 +1,6 @@
+# API entry point: re-allow access (Backend/.htaccess denies the rest)
+Require all granted
+
 Options -Indexes
 RewriteEngine On
 

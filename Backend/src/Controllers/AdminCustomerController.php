@@ -37,7 +37,7 @@ class AdminCustomerController
         Middleware::requireAdmin($req);
         $db      = Database::connect();
         $page    = max(1, (int) ($req->query('page')    ?? 1));
-        $perPage = (int) ($req->query('per_page') ?? self::PER_PAGE);
+        $perPage = min(100, max(1, (int) ($req->query('per_page') ?? self::PER_PAGE)));
         $search  = trim((string) ($req->query('search') ?? ''));
         $role    = trim((string) ($req->query('role')   ?? ''));
         $status  = trim((string) ($req->query('status') ?? ''));

@@ -12,7 +12,7 @@ function showToast(msg, type = 'info', duration = 4000) {
   const icons = { success: 'fa-circle-check', error: 'fa-circle-xmark', warning: 'fa-triangle-exclamation', info: 'fa-circle-info' };
   const t = document.createElement('div');
   t.className = `toast ${type}`;
-  t.innerHTML = `<i class="fas ${icons[type]} toast-icon"></i><span>${msg}</span><button class="toast-close" aria-label="Close"><i class="fas fa-times"></i></button>`;
+  t.innerHTML = `<i class="fas ${icons[type]} toast-icon"></i><span>${escHtml(msg)}</span><button class="toast-close" aria-label="Close"><i class="fas fa-times"></i></button>`;
   t.querySelector('.toast-close').addEventListener('click', () => dismiss(t));
   wrap.appendChild(t);
   const timer = setTimeout(() => dismiss(t), duration);

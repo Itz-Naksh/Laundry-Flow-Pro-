@@ -1,0 +1,4 @@
+# Block web access to everything under Backend/ (.env, config, logs, src,
+# vendor, worker, storage). Only public/ and uploads/ re-allow access
+# in their own .htaccess files.
+Require all denied
