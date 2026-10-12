@@ -148,6 +148,8 @@ class EmailService
 
     public static function welcomeTemplate(string $name, string $email): string
     {
+        $name  = self::e($name);
+        $email = self::e($email);
         return self::wrap("Welcome to Laundry Flow Pro, {$name}!", "
             <p style='font-size:16px;color:#374151;'>Hi <strong>{$name}</strong>,</p>
             <p style='color:#6b7280;'>Welcome to <strong>Laundry Flow Pro</strong>! Your account has been successfully created.</p>
@@ -166,6 +168,8 @@ class EmailService
 
     public static function orderConfirmTemplate(string $name, array $order): string
     {
+        $name  = self::e($name);
+        $order = array_map(fn($v) => is_scalar($v) ? self::e($v) : $v, $order);
         $amount = number_format((float)($order['total_amount'] ?? 0), 2);
         $pickup = $order['pickup_date'] ?? '—';
         $delivery = $order['delivery_date'] ?? '—';
@@ -200,6 +204,8 @@ class EmailService
 
     public static function statusUpdateTemplate(string $name, array $order, string $status): string
     {
+        $name  = self::e($name);
+        $order = array_map(fn($v) => is_scalar($v) ? self::e($v) : $v, $order);
         $labels = [
             'schedule'         => 'Scheduled for Pickup',
             'confirm'          => 'Confirmed',
@@ -218,7 +224,7 @@ class EmailService
         $note      = trim((string) ($order['note'] ?? ''));
         $noteBlock = '';
         if ($note !== '') {
-            $safeNote  = htmlspecialchars($note, ENT_QUOTES);
+            $safeNote  = $note; // already escaped with the rest of $order above
             $noteBlock = "
               <tr>
                 <td style='padding:10px 14px;color:#6b7280;font-size:13px;border-top:1px solid #e5e7eb;'>Remarks</td>
@@ -249,6 +255,8 @@ class EmailService
 
     public static function reviewRequestTemplate(string $name, array $order): string
     {
+        $name  = self::e($name);
+        $order = array_map(fn($v) => is_scalar($v) ? self::e($v) : $v, $order);
         return self::wrap("How was your experience? — {$order['order_number']}", "
             <p style='font-size:16px;color:#374151;'>Hi <strong>{$name}</strong>,</p>
             <p style='color:#6b7280;'>Your order <strong>{$order['order_number']}</strong> for <strong>{$order['service_name']}</strong> has been delivered. We hope you love it!</p>
@@ -268,6 +276,10 @@ class EmailService
 
     public static function promotionTemplate(string $name, string $subject, string $body, string $promoCode = ''): string
     {
+        // $body is pre-escaped by the caller (NotificationService)
+        $name      = self::e($name);
+        $subject   = self::e($subject);
+        $promoCode = self::e($promoCode);
         $promoBlock = '';
         if ($promoCode) {
             $promoBlock = "
@@ -286,6 +298,8 @@ class EmailService
 
     public static function passwordResetTemplate(string $name, string $resetLink): string
     {
+        $name      = self::e($name);
+        $resetLink = self::e($resetLink);
         return self::wrap('Reset Your Password', "
             <p style='font-size:16px;color:#374151;'>Hi <strong>{$name}</strong>,</p>
             <p style='color:#6b7280;'>We received a request to reset your password. Click the button below — this link expires in 1 hour.</p>
@@ -336,6 +350,12 @@ class EmailService
         } catch (\Throwable) {
             // Logging must never throw.
         }
+    }
+
+    /** Escape user-controlled text before inserting it into email HTML. */
+    private static function e(mixed $v): string
+    {
+        return htmlspecialchars((string) ($v ?? ''), ENT_QUOTES | ENT_HTML5, 'UTF-8');
     }
 
     private static function wrap(string $title, string $content): string

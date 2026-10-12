@@ -16,6 +16,18 @@ class Middleware
         if (empty($_SESSION['user_id'])) {
             Response::error('Unauthenticated. Please log in.', 401);
         }
+
+        // Re-check the account on every request so a suspended or deleted
+        // user loses access immediately, and role changes take effect.
+        $stmt = Database::connect()->prepare('SELECT role_id, status FROM users WHERE id = ? LIMIT 1');
+        $stmt->execute([(int) $_SESSION['user_id']]);
+        $user = $stmt->fetch();
+        if (!$user || $user['status'] !== 'active') {
+            session_unset();
+            Response::error('Your session is no longer valid. Please log in again.', 401);
+        }
+        $_SESSION['role_id'] = (int) $user['role_id'];
+
         $roleId = (int) ($_SESSION['role_id'] ?? 3);
         return [
             'user_id'    => (int) $_SESSION['user_id'],
